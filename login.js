@@ -5,24 +5,10 @@ function validate(){
 	var username = document.getElementById("username").value;
 	var password = document.getElementById("password").value;
 
-	if ( username == "Marina" && password == "frog"){
+	
+	if ( username == "test" && password == "test"){
 		alert ("Login successfully");
-		window.location = "closet.html"; //redirecting to other page
-		return false;
-	}
-	if ( username == "Aine" && password == "kitty"){
-		alert ("Login successfully");
-		window.location = "closet.html"; //redirecting to other page
-		return false;
-	}
-	if ( username == "Emma" && password == "shop"){
-		alert ("Login successfully");
-		window.location = "closet.html"; //redirecting to other page
-		return false;
-	}
-	if ( username == "Mya" && password == "tattooonheart"){
-		alert ("Login successfully");
-		window.location = "closet.html"; //redirecting to other page
+		window.location = "home.html"; //redirecting to other page
 		return false;
 	}
 	else{
