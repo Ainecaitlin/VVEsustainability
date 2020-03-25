@@ -6,13 +6,13 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket){
+io.on('connection', function(socket){ //message 
   socket.on('chat message', function(msg){
     io.emit('chat message', msg);
   });
 });
 
-io.on('connection', function(socket){
+io.on('connection', function(socket){ //connect/disconnect message
   console.log('a user connected');
   io.emit('chat message','A user connected')
   socket.on('disconnect', function(){
@@ -20,19 +20,6 @@ io.on('connection', function(socket){
     io.emit('chat message','A user disconnected')
   });
 });
-
-/*
-io.on('connection', function (socket) {
-  socket.on('disconnect', function(){
-  io.emit('user connected');
-  });
-});
-
-io.on('disconnect', function (socket) {
-  socket.on('disconnect', function(){
-  io.emit('user disconnected');
-  });
-});*/
 
 http.listen(3000, function(){
   console.log('listening on *:3000');
