@@ -1,6 +1,6 @@
 body{
-    background-image: url(img/image.jpg);
-    height:100vh;
+    background-image: url(../img/image2.jpeg);
+    
     background-size: cover;
     background-position: center;
 }
@@ -59,8 +59,4 @@ body{
 .form .message a{
     color: #4CAF50;
     text-decoration: none;
-}
-
-.form .register-form{
-    display: none;
 }
