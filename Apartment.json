@@ -1,0 +1,43 @@
+{
+    "_id": {
+        "$oid": "5ea098018774630e045e8d8e"
+    },
+    "vve_id": {
+        "$oid": "5ea0980b8774630e045e8d8f"
+    },
+    "longitude": {
+        "$numberDecimal": "0"
+    },
+    "latitude": "",
+    "address": {
+        "street": "Heresingel",
+        "number": {
+            "$numberInt": "22"
+        },
+        "city": "Groningen",
+        "post_code": "9711ET",
+        "status": {
+            "insulation": {
+                "$numberInt": "0"
+            },
+            "energy": {
+                "$numberInt": "0"
+            },
+            "charge": {
+                "$numberInt": "0"
+            },
+            "finance": {
+                "$numberInt": "0"
+            },
+            "legal": {
+                "$numberInt": "0"
+            },
+            "supply": {
+                "$numberInt": "0"
+            },
+            "risk": {
+                "$numberInt": "0"
+            }
+        }
+    }
+}

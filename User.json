@@ -1,0 +1,14 @@
+{
+    "_id": {
+        "$oid": "5ea096698774630e045e8d85"
+    },
+    "fName": "John",
+    "lName": "Doe",
+    "vve_ID": {
+        "$oid": "5ea096888774630e045e8d86"
+    },
+    "email": "rayyan808@gmail.com",
+    "role": "Admin",
+    "salt_password": "",
+    "hash_password": ""
+}
