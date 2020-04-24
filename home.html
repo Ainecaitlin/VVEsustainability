@@ -17,6 +17,9 @@
     <!-- Custom CSS -->
     <link href="css\home.css" rel="stylesheet">
 
+    <!-- Custom navbar CSS -->
+    <link href="css\nav.css" rel="stylesheet">
+
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
@@ -28,43 +31,24 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- NAVIGATION PAGE -->
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
 </head>
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation"> <!--Top navigation bar set up-->
-        <div class="container topnav"> <!--creates div "container topnav" (top navigation)-->
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand topnav" href="home.html">VVE Sustainability</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="aboutpage.html">About</a>
-                    </li>
-                    <li>
-                        <a href="node-login\views\login.ejs">My Account</a>
-                    </li>
-                  
-					<li>
-						<a href="chat\index.html">Messaging</a>
-					</li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+    <!--Navigation bar-->
+    <div id="nav-placeholder">
 
+    </div>
+
+    <script>
+        $(function(){
+            $("#nav-placeholder").load("nav.html");
+        });
+    </script>
+    <!--END Navigation bar-->
 
     <!-- Header -->
     <a name="about"></a>
