@@ -1,4 +1,4 @@
-var attempt = 3; //Variable to count number of attempts
+var attempt = 3; //Variable to count number of attempts //TODO: Store attempts in database (it gets reset upon refreshing)
 
 //Below function Executes on click of login button
 function validate(){
@@ -8,7 +8,7 @@ function validate(){
 	
 	if ( username == "test" && password == "test"){
 		alert ("Login successfully");
-		window.location = "home.html"; //redirecting to other page
+		window.location = "/home.html"; //redirecting to other page
 		return false;
 	}
 	else{
