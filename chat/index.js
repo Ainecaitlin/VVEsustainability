@@ -1,10 +1,8 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-const connect = require("./dbconnect");
-const Chat = require("./Chat")
-
-
+const connect = require("./dbconnection.js");
+const Chat = require("./chatschema.js")
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
@@ -14,6 +12,12 @@ io.on('connection', function(socket){ //message
   socket.on('chat message', function(msg){
     io.emit('chat message', msg);
   });
+  connect.then(db  =>  {
+    console.log("connected correctly to the server");
+
+    let  chatMessage  =  new Chat({ message: msg, sender: "Anonymous"});
+    chatMessage.save();
+    }); 
 });
 
 io.on('connection', function(socket){ //connect/disconnect message
