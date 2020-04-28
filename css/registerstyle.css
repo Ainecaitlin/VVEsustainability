@@ -1,6 +1,5 @@
 body{
-    background-image: url(../img/image2.jpeg);
-    
+    background-image: url(/img/houses.jpg);
     background-size: cover;
     background-position: center;
 }
@@ -24,7 +23,6 @@ body{
 
 .form input{
     font-family: "Roboto", sans-serif;
-    outline: 1;
     background: transparent;
     width: 100%;
     border: 0;
