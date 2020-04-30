@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-
-=======
-*/node_modules/*
+node_modules
 node-login/.env
->>>>>>> Create .gitignore
 node-login/package-lock.json
+package-lock.json
