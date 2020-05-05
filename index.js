@@ -45,7 +45,7 @@ app.use('/comments', util.getPostQueryString, require('./routes/comments'));
 app.use('/files', require('./routes/files'));
   
 // Port setting
-var port = 4500;
+var port = 80;
 app.listen(port, function(){
   console.log('server on! http://localhost:'+port);
 });
