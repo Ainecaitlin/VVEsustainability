@@ -27,7 +27,6 @@
                 "facade": {
                     "$numberInt" : "0"
                 },
-              },
             },
             "energy": {
                 "$numberInt": "0"
