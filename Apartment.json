@@ -18,10 +18,16 @@
         "post_code": "9711ET",
         "status": {
             "insulation": {
-                "roof": "0"
-                "floor": "0"
-                "facade": "0"
+                "roof": {
+                    "$numberInt" : "0"
                 },
+                "floor": {
+                    "$numberInt" : "0"
+                },
+                "facade": {
+                    "$numberInt" : "0"
+                },
+              },
             },
             "energy": {
                 "$numberInt": "0"
