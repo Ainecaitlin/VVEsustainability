@@ -18,6 +18,7 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreat
 
 //other setting  
 app.set('view engine', 'ejs');
+app.set('views', './views');
 app.use(express.static(__dirname+'/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
@@ -45,7 +46,7 @@ app.use('/comments', util.getPostQueryString, require('./routes/comments'));
 app.use('/files', require('./routes/files'));
   
 // Port setting
-var port = 80;
+var port = 8000;
 app.listen(port, function(){
   console.log('server on! http://localhost:'+port);
 });
