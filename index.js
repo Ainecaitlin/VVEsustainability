@@ -7,7 +7,19 @@ var session = require('express-session');
 var passport = require('./config/passport');
 var util = require('./util');
 var app = express();
-  
+//==== Adding some debugging stuff here ====///
+  var http=require('http');
+
+var server=http.createServer(function(req,res){
+    res.end('test');
+});
+
+server.on('listening',function(){
+    console.log('ok, server is running');
+});
+
+server.listen(8000);
+//========== End of debug stuff =======///
 // DB setting
 const db = require('./config/key').MongoURI;
 
