@@ -1,7 +1,8 @@
 <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>Solar Panel General Chat</title>
+    <h1>Chat Room to discuss Solar Panels</h1>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -34,6 +35,26 @@
       $('#messages').append($('<li>').text(msg));
     });
   });
+</script>
+<script>
+  (function() {
+    fetch("/chats")
+    .then(data  =>  {
+    return  data.json();
+    })
+.then(json  =>  {
+json.map(data  =>  {
+let  li  =  document.createElement("li");
+let messages = document.getElementById("message")
+let  span  =  document.createElement("span");
+messages.appendChild(li).append(data.message);
+
+    messages
+    .appendChild(span)
+    .append("by "  +  data.sender  +  ": "  +  formatTimeAgo(data.createdAt));
+});
+});
+})();
 </script>
 
   </body>
