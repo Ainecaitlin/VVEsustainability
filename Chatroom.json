@@ -1,0 +1,18 @@
+{
+    "_id": {
+        "$oid": "5ea096d98774630e045e8d87"
+    },
+    "name": "Chatroom Alpha",
+    "message": {
+        "user": {
+            "$oid": "5ea097218774630e045e8d89"
+        },
+        "time": {
+            "$timestamp": {
+                "t": 0,
+                "i": 0
+            }
+        },
+        "text": ""
+    }
+}

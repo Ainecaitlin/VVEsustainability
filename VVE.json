@@ -1,0 +1,14 @@
+{
+    "_id": {
+        "$oid": "5ea097858774630e045e8d8a"
+    },
+    "board_members": [{
+        "$oid": "5ea097958774630e045e8d8b"
+    }],
+    "members": [{
+        "$oid": "5ea097aa8774630e045e8d8c"
+    }],
+    "apartments": [{
+        "$oid": "5ea097b88774630e045e8d8d"
+    }]
+}
