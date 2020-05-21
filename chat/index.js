@@ -3,7 +3,7 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var socket = require('socket.io')(http);
 const connect = require("./dbconnection.js");
-const Chat = require("./chatschema.js")
+const Chat = require("./chatschema.js");
 const fetch = require("node-fetch");
 
 
@@ -64,12 +64,13 @@ socket.on("connection", socket  =>  {
   socket.on("chat message", function(msg) {
       console.log("message: "  +  msg);
       socket.broadcast.emit('chat message', msg);
-      socket.emit('chat message', msg);// okay this part is a bit finnicky, we send messages to everyone and to ourselves at the same time but i think since we want to save to database we dont want to send ourselves a message
+      //socket.emit('chat message', msg);// okay this part is a bit finnicky, we send messages to everyone and to ourselves at the same time but i think since we want to save to database we dont want to send ourselves a message
  // socket.broadcast.emit("received", { message: msg  });
   connect.then(db  =>  {
   console.log("connected correctly to the server");
-  let  chatMessage  =  new Chat({ message: msg, sender: "Anonymous"});
+  let  chatMessage  =  new Chat({ message: msg, sender: "Dante"});
   chatMessage.save();
+  console.log("message saved correctly to the server");
   });
   });
 });
@@ -96,15 +97,24 @@ socket.on("typing", data => {
 socket.on("stopTyping", () => { socket.broadcast.emit("notifyStopTyping"); });*/
 
 
-/*(function(){
-  socket.on("received", data  =>  {
-  let  li  =  document.createElement("li");
-  let  span  =  document.createElement("span");
-  var  messages  =  document.getElementById("messages");
-  messages.appendChild(li).append(data.message);
-  messages.appendChild(span).append("by "  +  "anonymous"  +  ": "  +  "just now");
-  });
-  })*/
+(function() {
+  fetch("test/chats")
+  .then(data  =>  {
+  return  data.json();
+  })
+.then(json  =>  {
+json.map(data  =>  {
+let  li  =  document.createElement("li");
+let messages = document.getElementById("messages")
+let  span  =  document.createElement("span");
+messages.appendChild(li).append(data.message);
+  messages
+  .appendChild(span)
+  .append("by "  +  data.sender  +  ": "  +  formatTimeAgo(data.createdAt));
+});
+});
+})();
+
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
