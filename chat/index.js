@@ -97,8 +97,8 @@ socket.on("typing", data => {
 socket.on("stopTyping", () => { socket.broadcast.emit("notifyStopTyping"); });*/
 
 
-(function() {
-  fetch("test/chats")
+/*(function() {
+  fetch("/test/chats")
   .then(data  =>  {
   return  data.json();
   })
@@ -113,7 +113,7 @@ messages.appendChild(li).append(data.message);
   .append("by "  +  data.sender  +  ": "  +  formatTimeAgo(data.createdAt));
 });
 });
-})();
+})();*/
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
