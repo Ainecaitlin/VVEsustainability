@@ -13,6 +13,7 @@
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: rgb(86, 200, 79); }
       #messages li:nth-child(even) { background: rgb(13, 231, 97); }
+      #messages{height: 600px;}
     </style>
   </head>
   <body>
@@ -45,13 +46,13 @@
 .then(json  =>  {
 json.map(data  =>  {
 let  li  =  document.createElement("li");
-let messages = document.getElementById("message")
+let messages = document.getElementById("messages")
 let  span  =  document.createElement("span");
 messages.appendChild(li).append(data.message);
 
     messages
     .appendChild(span)
-    .append("by "  +  data.sender  +  ": "  +  formatTimeAgo(data.createdAt));
+    .append("by "  +  "data.sender"  +  ": "  +  formatTimeAgo(data.createdAt));  
 });
 });
 })();

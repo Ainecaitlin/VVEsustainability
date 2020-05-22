@@ -29,12 +29,15 @@ socket.on("connection", socket  =>  {
  // socket.broadcast.emit("received", { message: msg  });
   connect.then(db  =>  {
   console.log("connected correctly to the server");
-  let  chatMessage  =  new Chat({ message: msg, sender: "Dante"});
+  let  chatMessage  =  new Chat({ message: msg, sender: "Dante", chatroom: "Solar Panel"});
   chatMessage.save();
   console.log("message saved correctly to the server");
   });
   });
 });
+
+
+
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });

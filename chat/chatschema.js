@@ -8,7 +8,10 @@ const  chatSchema  =  new Schema(
     },
     sender: {
     type: String
-        }
+    },
+    chatroom: {
+    type: String
+    }
 });
 
 let  Chat  =  mongoose.model("Chat", chatSchema);
