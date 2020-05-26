@@ -1,28 +1,58 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-transparent mb-3">
-  <div class="navbar-brand">VVE Sustainability</div>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<!DOCTYPE html>
+<html>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
-          <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
-          <li class="nav-item"><a href="/posts" class="nav-link">Board</a></li>
-          <li class="nav-item"><a href="/chat" class="nav-link">Chat</a></li>
-        </ul>
+<head>
 
-        <ul class="navbar-nav ml-auto">
-          <% if(isAuthenticated){ %>
-            <li class="nav-item"><a href="/users/<%= currentUser.username %>" class="nav-link">My Account</a></li>
-            <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
-          <% } else { %>
-            <li class="nav-item"><a href="/users/new" class="nav-link">Sign Up</a></li>
-            <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
-          <% } %>
-        </ul>
+</head>
 
-      </div>
-    
-  </nav>
-  
+<body>
+  <header>
+    <nav class="navbar navbar-expand navbar-dark bg-transparent mb-3">
+      <div class="navbar-brand">VVE Sustainability</div>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto">
+              <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+              <li class="nav-item"><a href="/advice" class="nav-link">Advice</a></li>
+              <li class="nav-item"><a href="/led" class="nav-link">LED-LIGHTING</a></li>
+              <li class="nav-item"><a href="/insulation" class="nav-link">INSULATION</a></li>
+              <li class="nav-item"><a href="/hr" class="nav-link">HR++</a></li>
+              <li class="nav-item"><a href="/energy-generation" class="nav-link">ENERGY GENERATION</a></li>
+              <li class="nav-item"><a href="/charging-station" class="nav-link">CHARGIN STATION</a></li>
+              <li class="nav-item"><a href="/finance" class="nav-link">FINANCE</a></li>
+            </ul>
+
+            <ul class="navbar-nav right-nav ml-auto">
+              <li class="nav-item"><a href="/shop" class="nav-link">SHOP</a></li>
+              <% if(isAuthenticated){ %>
+                <li class="nav-item"><a href="/users/<%= currentUser.username%>" class="nav-link">My Account</a></li>
+                <li class="nav-item"><a href="/logout" class="nav-link">LOGOUT</a></li>
+              <% } else { %>
+                <li class="nav-item"><a href="/users/new" class="nav-link">REGISTER</a></li>
+                <li class="nav-item"><a href="/login" class="nav-link">LOGIN</a></li>
+              <% } %>
+              <input type="checkbox" id="menuicon">
+              <div class="iconHolder">
+                <label for="menuicon" class="menubtn">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </label>
+              </div>
+              <div class="container">
+                <div class="sidebar">
+                  <span class="area_desc">  </span>
+                    <div class="sidenav">
+                      <li class = "sidebar-item"><a href="#" class="sidebar-link">NEWS</a></li>
+                      <li class = "sidebar-item"><a href="#" class="sidebar-link">FIND VVE</a></li>
+                      <li class = "sidebar-item"><a href="#" class="sidebar-link">SUPPORT</a></li>
+                    </div>
+                  
+                </div>
+              </div>
+            </ul>
+          
+          </div>
+      </nav>
+  </header>
+</body>
+</html>

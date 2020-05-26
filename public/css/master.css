@@ -1,10 +1,11 @@
 body {
     font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../img/houses.jpg");
+    background-image: url("../img/home2.jpg");
     height:100vh;
     background-size: cover;
     background-position: center;
   }
+
   .breadcrumb-item {
     font-size: 0.8em !important;
   }
@@ -70,13 +71,128 @@ body {
     display:inherit;
   }
 
-.jumbotron-fluid{
-  position: relative;
-  top: 50px;
-  background-color:transparent;  
-  color:white;
-}
-
 .navbar-brand{
   color: white;
 }
+
+.navbar{
+  position: relative;
+  z-index: 200;
+}
+.navbar.navbar-dark .navbar-nav .nav-link{
+  color: #ffffff;
+}
+
+.navbar.navbar-dark .navbar-nav .nav-link:hover{
+  text-decoration: underline;
+}
+
+.right-nav{
+  padding-right: 2em;
+} 
+
+.container .sidebar {
+	position: fixed;
+	top: 0;
+	right: -300px;
+	width: 300px;
+	height: 100%;
+	background: #fff;
+	z-index: 30;
+  transition: .35s;
+}
+
+.container .sidebar .sidenav{
+  margin:40px;
+  padding-top:60px;
+  font-size: 16px;
+}
+
+.container .sidebar .sidenav .sidebar-link:hover{
+  text-decoration: underline;
+}
+
+.container .sidebar .sidenav .sidebar-item{
+  padding:10px;
+  border-bottom: 2px solid rgb(97, 97, 97);
+}
+
+.container .sidebar .sidenav a {
+  color: rgb(97, 97, 97);
+  text-decoration: none;
+  background-color: transparent;
+}
+
+input#menuicon{
+  display: none;
+}
+
+.menubtn {
+	display: block;
+	width: 35px;
+	height: 35px;
+	position: absolute;
+	top: 50%;
+	right: 10px;
+	transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 50;
+}
+
+.menubtn span {
+	display: block;
+	position: absolute;
+	width: 80%;
+	height: 5px;
+	border-radius: 30px;
+	background: #ffffff;
+	transition: all .35s;
+}
+
+.menubtn span:nth-child(1) {
+	top: 20%;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.menubtn span:nth-child(2) {
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.menubtn span:nth-child(3) {
+	bottom: 0%;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+/* input[id="menuicon"]:checked~.iconHolder .menubtn {
+	z-index: 2;
+} */
+
+input[id="menuicon"]:checked~.iconHolder .menubtn span {
+  background: #000000;
+}
+
+input[id="menuicon"]:checked~.iconHolder .menubtn span:nth-child(1) {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) rotate(135deg);
+}
+
+input[id="menuicon"]:checked~.iconHolder .menubtn span:nth-child(2) {
+	/* left: 50%;
+	transform: translate(-50%, -50%) scale(2); */
+	opacity: 0;
+}
+
+input[id="menuicon"]:checked~.iconHolder .menubtn span:nth-child(3) {
+	bottom: 50%;
+	transform: translate(-50%, 50%) rotate(-135deg);
+}
+
+input[id="menuicon"]:checked~.container .sidebar {
+	right: 0;
+}
+

@@ -1,0 +1,40 @@
+body {
+  font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+  background-image: url("../img/advice.jpg"); 
+  height:100vh;
+  background-size: cover;
+  background-position: center;
+} 
+
+.navbar-brand{
+  color: white;
+}
+
+
+#fullpage .section{
+  height: 100vh;
+  display: block;
+  width: 100%;
+  background: transparent;
+}
+#fullpage .section .fp-tableCell{
+  width: 100vw;
+}
+#fullpage .section h2{
+  color: white;
+  text-align: center;
+  width: 100%;
+}
+#fullpage .section h1{
+  color: white;
+  text-align: center;
+  width: 100%;
+}
+#fp-nav ul li a span{
+  background: white;
+}
+#fullpage .section p{
+  color: white;
+  width: 50%;
+  margin: auto;
+}

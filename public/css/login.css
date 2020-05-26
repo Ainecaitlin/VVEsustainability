@@ -1,0 +1,80 @@
+body {
+    font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+    background-image: url("../img/login.jpg");
+    height:100vh;
+    background-size: cover;
+    background-position: center;
+  }
+
+.container {
+    background-color: rgba(99, 96, 96, 0.247);
+    height: 450px;
+    margin-top: 200px;
+    color: white;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+.container p{
+    width: 100%;
+    margin-left: -90px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: green;
+    border-color: green;
+    margin-left: 100px;
+}
+
+.btn-primary {
+    margin-left: 120px;
+    color: #fff;
+    background-color: rgba(109, 226, 111, 0.795);
+    border-color: rgba(109, 226, 111, 0.795);
+}
+
+.btn-primary:hover, .btn-primary:active{
+    background: green;
+    border: transparent;
+}
+.col-sm-9 {
+    position:relative;
+    z-index: 1;
+    background: transparent;
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 45px;
+    text-align: center;
+}
+
+.col-sm-9  input{
+    outline: 1;
+    background: transparent;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    font-size: 14px;
+}
+
+.user-form {
+    width: 1000px;
+}
+
+.user-form .message{
+    margin: 15px 0 0;
+    color: #fff;
+    font-size: 13px;
+    
+}
+
+.user-form .message a{
+    color:#4caf50;
+    text-decoration: none;
+}
+
+.mt-5, .my-5 {
+    margin-top: 2rem!important;
+}
