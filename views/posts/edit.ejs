@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../partials/head') %>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+
+    <div class="container mb-3">
+
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-1 pl-2 pr-2">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><a href="/posts">Board</a></li>
+          <li class="breadcrumb-item"><a href="/posts/<%= post._id %>"><%= post.title %></a></li>
+          <li class="breadcrumb-item active" aria-current="page">Edit Post</li>
+        </ol>
+      </nav>
+
+      <form action="/posts/<%= post._id %>?_method=put<%= getPostQueryString(true) %>" enctype="multipart/form-data" method="post">
+
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" value="<%= post.title %>" class="form-control <%= (errors.title)?'is-invalid':'' %>">
+          <% if(errors.title){ %>
+            <span class="invalid-feedback"><%= errors.title.message %></span>
+          <% } %>
+        </div>
+
+        <div class="form-group">
+          <label for="title">Attachment</label>
+
+          <input type="hidden" id="attachment" name="attachment" value="<%= post.attachment?post.attachment._id:'' %>">
+
+          <% if(post.attachment){ %>
+            <div class="input-group mb-3" id="currentAttachemnt">
+              <input type="text" class="form-control" value="<%= post.attachment.originalFileName %>" readonly />
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" onclick="$('#attachment').val('');$('#currentAttachemnt').hide();$('#newAttachment').removeClass('d-none');">Delete</button>
+              </div>
+            </div>
+          <% } %>
+          <input type="file" id="newAttachment" class="form-control-file <%= post.attachment?'d-none':'' %>" name="newAttachment" id="uploadImage">
+        </div>
+
+        <div class="form-group">
+          <label for="body">Body</label>
+          <textarea id="body" name="body" rows="5" class="form-control <%= (errors.body)?'is-invalid':'' %>"><%= post.body %></textarea>
+          <% if(errors.body){ %>
+            <span class="invalid-feedback"><%= errors.body.message %></span>
+          <% } %>
+        </div>
+
+        <% if(errors.unhandled){ %>
+          <div class="invalid-feedback b-block">
+            <%= errors.unhandled %>
+          </div>
+        <% } %>
+
+        <div>
+          <a class="btn btn-primary" href="/posts/<%= post._id %><%= getPostQueryString() %>">Back</a>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+      </form>
+
+    </div>
+  </body>
+</html>
