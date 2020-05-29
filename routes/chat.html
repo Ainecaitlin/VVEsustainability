@@ -1,9 +1,5 @@
-<!doctype html>
 <html>
-    <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
-
     
-      <script src="/givemejquery"></script>
   <head>
     <title>Solar Panel General Chat</title>
     <h1>Chat Room to discuss Solar Panels</h1>
@@ -26,46 +22,49 @@
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
 <script>
-  $(function () {
-      var chatData = <%- JSON.stringify(chatData) %>;
-      console.log("printing client-side data recieved: " + chatData);
-    //fetch("/chats").then(json  =>  {
-//J//SON.parse(chatData  =>  {
-let  li  =  document.createElement("li");
-let messages = document.getElementById("messages")
-let  span  =  document.createElement("span");
-      for(i =0; i < chatData.length; i++){ //For every message recieved
-$('#messages').append($('<li>').text(chatData[i].message));
-          $('#messages').append($('<span>').text("by " + chatData[i].sender));
-      }
-    /*messages
-    .appendChild(span)
-    .append("by "  +  chatData.sender  +  ": "    /*formatTimeAgo(chatData.createdAt));*/
-      
-    const socket = io.connect('64.227.79.217:80');
+  function init() {
+    const socket = io.connect('http://localhost');
     $('form').submit(function(e){
       e.preventDefault(); // prevents page reloading
-      socket.emit('chat message', $('#m').val()); 
+      io.sockets.emit('chat message', $('#m').val()); 
       $('#m').val('');
       return false;
     });
-    socket.on('chat message', function(msg){
+    io.sockets.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
     });
-  
-      
-//});
+  }
+</script>
+<script>
+    fetch("/chats")
+    .then(chatData  =>  {
+    return  chatData.json();
+    })
+.then(json  =>  {
+json.map(chatData  =>  {
+let  li  =  document.createElement("li");
+let messages = docuemtn.getElementById("messages")
+let  span  =  document.createElement("span");
+messages.appendChild(li).append(data.message);
 
-    socket.on("received", msgData => {
+    messages
+    .appendChild(span)
+    .append("by "  +  data.sender  +  ": "  +  formatTimeAgo(data.createdAt));
+});
+
+    socket.on("received", data => {
     let li = document.createElement("li");
     let span = document.createElement("span");
     var messages = document.getElementById("messages");
-    messages.appendChild(li).append(msgData.message);
+    messages.appendChild(li).append(data.message);
     messages.appendChild(span).append("by " + "anonymous" + ": " + "just now");
     console.log("Hello bingo!");
-  });/*}).catch(err => { console.log(err); });*/
-      });
+  })}).catch(err => {
+        console.log(err);
+    });
 </script>
-
+<script src="/socket.io/socket.io.js" charst="utf-8"></script>
+    
+      <script src="/jquery/dist/jquery.js"></script>
   </body>
 </html>

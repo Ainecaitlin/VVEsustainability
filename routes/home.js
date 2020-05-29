@@ -1,11 +1,17 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
+var fs = require('fs');
 var passport = require('../config/passport');
 var apartmentArray = [];
 var mapDataModel;
 var apartmentArray = [];
-
+var chatArray = [];
+var http = require('http')/*0.createServer(app)*/;
+var io = require('socket.io')(http);
+var socket = require('socket.io')(http);
+const Chat = require("./chatschema.js");
+const fetch = require("node-fetch");
         /****** SCHEMA **********/
 //Define a schema
 const Schema = mongoose.Schema; //To make my life easier
@@ -33,73 +39,73 @@ function modelAlreadyDeclared () {
     return false
   }
 }
-/*********************************/
-// Home
+/*************INCOMING ROUTES*****************/
+// Direct to Home
 router.get('/', function (req, res) {
-    /*if (!modelAlreadyDeclared()) {
-        //If we have not yet created the Model, make it now.
-
-        mapDataModel = mongoose.model('Apartment', MapModelSchema,'Apartment'); //Assign the schema to a model labelled 'Apartment' 
-        apartmentArray = loadMap();
-    }else{
-        //(arg1) and query it to the collection named 'Apartment' (arg2)
-        apartmentArray = loadMap();
-    }*/
-/* ************** */
-  //res.render('home/welcome.ejs', {apartmentArray: apartmentArray}); //Display the welcome page and pass the array into it
     apartmentArray = loadMap(res);
-   // res.jsonp(apartmentArray);
 });
-
+// Click on Chat
+router.get('/chats', function (req, res){
+    chatArray = loadChat(res);
+});
 async function loadMap(res){
       /* Back-End code for obtaining VVE Geolocations*/
- 
      mapDataModel = mongoose.model('Apartment', MapModelSchema, 'Apartment');
- 
-//const apartmentList = await mapDataModel.find(); //Find all Apartments
-//Cursor acts as a buffer, when the VVE-Apartments scale up this will keep the querying within bandwith
-    var rawApartmentArray = [];
-console.log("Searching for Apartments..");
-const query =  mapDataModel.find();
-var promise = query.then(function (docs, err){
-    if(err){
+     var rawApartmentArray = [];
+     console.log("Searching for Apartments..");
+     const query =  mapDataModel.find();
+     var promise = query.then(function (docs, err){
+     if(err){
         console.log("Error caught during query.then" + err);
-    }
-    else{
+     }
+     else{
             console.log("Search results: " + docs.length);
         
     res.locals.apartmentArray = docs;
     console.log(docs);
-        console.log("Type of 'docs' " + typeof(docs));
+        console.log("Type of Map 'docs' " + typeof(docs));
     console.log("res.locals.apartmentArray has been set");
     res.render('home/mapPage.ejs', {data: docs});
     console.log("res.render() called");
-            return docs;
+    return docs;
     }
 }).catch(err => {
     console.log(err);
 });
-            /*for (var i in results){
-                console.log(results[i]);
-                rawApartmentArray.push(results[i]);
-                console.log('added apartment');
-            }
-        })
-  /*  const promise = await Promise.all(array)
-    res.json(promise)
-    for(var item in promise){
-  // Extract Longitude and Latitude variables into an object
-        console.log("Putting DB data into package.")
-    var apartmentData = {
-	    latitude : item.latitude,
-        longitude : item.longitude,
-        status : item.status
-        }
-        console.log("Pushing apartment" + item.latitude + " into apartmentArray");
-        // Pass this object into our global variable array
-        apartmentArray.push(apartmentData);
-    }*/
     return rawApartmentArray;
+}
+async function loadChat(res){
+    //***Load all chat messages in the DB into a JSON and push to client-side***//
+    const chatQuery = Chat.find();
+    var chatPromise = chatQuery.then(
+    function (docs, err)
+     {
+        if(err)
+        {
+            console.log("Error caught during Chat Query: " + err);
+        }
+    else
+     {
+         //Promise was kept and document loaded without error
+        console.log("Chat results:" + docs.length);        
+        //res.locals.chatData = docs;
+        console.log(docs);
+        console.log("Type of Chat 'docs':" + typeof(docs));
+        //res.render('home/chat.ejs', { html: html }); //Render it in EJS 
+         
+         //res.json(docs);
+         //res.sendFile(__dirname + '/chat.html');
+         //console.log("Sending Chat.html via RES");
+         
+        res.render('home/chat.ejs', {chatData: docs});
+        console.log("Chat.ejs rendering... Chat messages: " + docs.length);
+         
+        return docs;
+     }
+    }).catch(err => {
+    console.log(err);
+  });
+ return chatArray;   
 }
 router.get('/about', function(req, res){
   res.render('home/about');
@@ -149,5 +155,4 @@ router.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
 });
-
 module.exports = router;
