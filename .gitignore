@@ -1,9 +1,2 @@
-.idea
-.vscode
-*/.vscode
-node_modules/*
-*/node_modules/*
-node-login/.env
+
 node-login/package-lock.json
-package-lock.json
-*/package-lock.json

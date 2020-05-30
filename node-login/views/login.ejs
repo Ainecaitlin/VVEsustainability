@@ -1,0 +1,34 @@
+
+<head>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class = "login-page">
+    <div class = "form">
+    <% if (messages.error) { %>
+        <%= messages.error %>
+        <% } %>
+    <form  class = "login-form" action="/login" method="POST">
+        <div>
+        <input placeholder="Email" type="email" id="email" name="email" required>
+        </div>
+        <div>
+        <input placeholder="password" type="password" id="password" name="password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+    <p class = "message"> Not Registered? <a href="/register">Register</a> </p>
+
+
+    </div>
+    </div>
+
+    <script src='https://code.jquery.com/jquery-3.4.1.min.js'>
+</script>
+
+<script>
+    $('.message a').click(function(){
+        $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+    });
+</script>
+</body>
