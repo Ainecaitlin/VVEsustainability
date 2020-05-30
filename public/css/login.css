@@ -1,66 +1,73 @@
 body {
-    font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
-    background-image: url("../img/login.jpg");
+    font-family: 'Raleway', sans-serif;
+    background-image: url("../img/house2.jpg");
     height:100vh;
     background-size: cover;
     background-position: center;
   }
 
-.container {
+.form {
     background-color: rgba(99, 96, 96, 0.247);
-    height: 450px;
-    margin-top: 200px;
     color: white;
-    width: 100%;
-    padding: 20px;
+    padding: 60px;
     text-align: center;
 }
 
-.container p{
+.form p{
     width: 100%;
-    margin-left: -90px;
+    margin-left: -230px;
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: green;
-    border-color: green;
-    margin-left: 100px;
-}
+button {
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
 
 .btn-primary {
-    margin-left: 120px;
-    color: #fff;
-    background-color: rgba(109, 226, 111, 0.795);
-    border-color: rgba(109, 226, 111, 0.795);
+    transition: .3s ease-in-out;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 5px;
+    text-align: center;
+    width: 8em;
+    border-radius: 1em;
+    margin: 5px;
+    text-decoration: none;
 }
 
 .btn-primary:hover, .btn-primary:active{
-    background: green;
-    border: transparent;
+    transition: .3s ease-in-out;
+    background: white;
+    color: black;
 }
-.col-sm-9 {
-    position:relative;
-    z-index: 1;
-    background: transparent;
-    max-width: 360px;
-    margin: 0 auto 100px;
-    padding: 45px;
-    text-align: center;
-}
-
-.col-sm-9  input{
+.col-sm-3  input{
     outline: 1;
-    background: transparent;
-    width: 100%;
+    background: white;
+    width: 60%;
     border: 0;
     margin: 0 0 15px;
     padding: 15px;
     font-size: 14px;
 }
 
+.col-sm-3 {
+    
+    position:relative;
+    z-index: 1;
+    max-width: 25%;
+    color: white;
+}
+
 .user-form {
-    width: 1000px;
+    width: 100%;
 }
 
 .user-form .message{
@@ -71,7 +78,7 @@ body {
 }
 
 .user-form .message a{
-    color:#4caf50;
+    color:#132172;
     text-decoration: none;
 }
 

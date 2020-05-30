@@ -27,7 +27,10 @@
       </div>
         <div class="row">
           <a class="transparent-btn" href="/led-information">Information</a>
-          <a class="transparent-btn" href="/led-search">Search</a>
+          <!--you can only see this button when login--> 
+          <% if(isAuthenticated){ %>
+            <a class="transparent-btn" href="/posts">Search</a>
+          <% } %>
           <a class="transparent-btn" href="#">Chat</a>
         </div>
       </div>

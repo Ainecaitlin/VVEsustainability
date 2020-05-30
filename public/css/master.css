@@ -1,6 +1,6 @@
 body {
-    font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
-    background-image: url("../img/home2.jpg");
+    font-family: 'Raleway', sans-serif;
+    background-image: url("../img/house2.jpg");
     height:100vh;
     background-size: cover;
     background-position: center;
@@ -71,14 +71,18 @@ body {
     display:inherit;
   }
 
-.navbar-brand{
+.navbar-brand .nav-link{
   color: white;
+  font-size: 15px;
 }
 
 .navbar{
   position: relative;
   z-index: 200;
+  font-size: 14px;
 }
+
+
 .navbar.navbar-dark .navbar-nav .nav-link{
   color: #ffffff;
 }
@@ -97,7 +101,7 @@ body {
 	right: -300px;
 	width: 300px;
 	height: 100%;
-	background: #fff;
+	background: rgba(255, 255, 255, 0.76);
 	z-index: 30;
   transition: .35s;
 }
@@ -114,11 +118,11 @@ body {
 
 .container .sidebar .sidenav .sidebar-item{
   padding:10px;
-  border-bottom: 2px solid rgb(97, 97, 97);
+  border-bottom: 2px solid rgb(116, 116, 116);
 }
 
 .container .sidebar .sidenav a {
-  color: rgb(97, 97, 97);
+  color: rgb(116, 116, 116);
   text-decoration: none;
   background-color: transparent;
 }
@@ -196,3 +200,22 @@ input[id="menuicon"]:checked~.container .sidebar {
 	right: 0;
 }
 
+
+.btn-primary {
+  transition: .3s ease-in-out;
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 5px;
+  text-align: center;
+  width: 8em;
+  border-radius: 1em;
+  margin: 5px;
+  text-decoration: none;
+}
+
+.btn-primary:hover, .btn-primary:active{
+  transition: .3s ease-in-out;
+  background: white;
+  color: black;
+}

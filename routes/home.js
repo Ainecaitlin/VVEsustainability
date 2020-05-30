@@ -1,11 +1,15 @@
 var express = require('express');
+
 var router = express.Router();
 var passport = require('../config/passport');
+
+
 
 // Home
 router.get('/', function(req, res){
   res.render('home/welcome');
 });
+
 router.get('/about', function(req, res){
   res.render('home/about');
 });
@@ -61,7 +65,7 @@ router.get('/energy-generation-search', function(req, res){
 });
 // charging station
 router.get('/charging-station', function(req, res){
-  res.render('charging-station/chargin-station');
+  res.render('charging-station/charging-station');
 });
 router.get('/charging-station-information', function(req, res){
   res.render('charging-station/information');
@@ -71,15 +75,28 @@ router.get('/charging-station-search', function(req, res){
 });
 // finance
 router.get('/finance', function(req, res){
-  res.render('finance/finanace');
+  res.render('finance/finance');
 });
-router.get('/finanace-information', function(req, res){
+router.get('/finance-information', function(req, res){
   res.render('finance/information');
 });
 router.get('/finanace-search', function(req, res){
   res.render('posts');
 });
 
+// Side navigation
+//find vve
+router.get('/map', function(req, res){
+  res.render('map');
+});
+//newsletter
+router.get('/newsletter', function(req, res){
+  res.render('newsletter/newsletter');
+});
+// support
+router.get('/support', function(req, res){
+  res.render('home/contact');
+});
 
 // Login
 router.get('/login', function (req,res) {
@@ -115,7 +132,7 @@ router.post('/login',
     }
   },
   passport.authenticate('local-login', {
-    successRedirect : '/posts',
+    successRedirect : '/',
     failureRedirect : '/login'
   }
 ));

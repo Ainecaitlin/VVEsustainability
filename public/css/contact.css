@@ -1,0 +1,13 @@
+body {
+    font-family: 'Raleway', sans-serif;
+    background-image: url("../img/image.jpg"); 
+    height:100vh;
+    background-size: cover;
+    background-position: center;
+  } 
+  
+  .container-fluid{
+      color:white;
+      text-align: left;
+      padding: 50px;
+  }

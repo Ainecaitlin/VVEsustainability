@@ -2,16 +2,18 @@
 <html>
 
 <head>
-
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <header>
     <nav class="navbar navbar-expand navbar-dark bg-transparent mb-3">
-      <div class="navbar-brand">VVE Sustainability</div>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto">
-              <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+      
+      <li class="navbar-brand"><a href="/" class="nav-link">VVE Sustainability</a></li>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto w-100 justify-content-center">
               <li class="nav-item"><a href="/advice" class="nav-link">Advice</a></li>
               <li class="nav-item"><a href="/led" class="nav-link">LED-LIGHTING</a></li>
               <li class="nav-item"><a href="/insulation" class="nav-link">INSULATION</a></li>
@@ -20,7 +22,7 @@
               <li class="nav-item"><a href="/charging-station" class="nav-link">CHARGIN STATION</a></li>
               <li class="nav-item"><a href="/finance" class="nav-link">FINANCE</a></li>
             </ul>
-
+        </div>
             <ul class="navbar-nav right-nav ml-auto">
               <li class="nav-item"><a href="/shop" class="nav-link">SHOP</a></li>
               <% if(isAuthenticated){ %>
@@ -43,16 +45,14 @@
                   <span class="area_desc">  </span>
                     <div class="sidenav">
                       <li class = "sidebar-item"><a href="#" class="sidebar-link">NEWS</a></li>
-                      <li class = "sidebar-item"><a href="#" class="sidebar-link">FIND VVE</a></li>
-                      <li class = "sidebar-item"><a href="#" class="sidebar-link">SUPPORT</a></li>
+                      <li class = "sidebar-item"><a href="/newsletter" class="sidebar-link">NEWSLETTER</a></li>
+                      <li class = "sidebar-item"><a href="/map" class="sidebar-link">FIND VVE</a></li>
+                      <li class = "sidebar-item"><a href="/support" class="sidebar-link">SUPPORT</a></li>
                     </div>
                   
                 </div>
               </div>
-            </ul>
-          
-          </div>
-      </nav>
-  </header>
+            </ul>         
+    </nav>
 </body>
 </html>
