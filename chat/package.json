@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "description": "my first socket.io app",
   "dependencies": {
-    "bluebird": "^3.7.2",
-    "express": "^4.17.1",
-    "mongoose": "^5.9.10",
+    "express": "^4.15.2",
     "socket.io": "^2.3.0"
   }
 }
