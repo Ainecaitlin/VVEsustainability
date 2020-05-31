@@ -42,7 +42,7 @@ $('#messages').append($('<li>').text(chatData[i].message));
     .appendChild(span)
     .append("by "  +  chatData.sender  +  ": "    /*formatTimeAgo(chatData.createdAt));*/
       
-    const socket = io.connect('64.227.79.217:80');
+    const socket = io.connect('64.227.79.217:8000');
     $('form').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val()); 

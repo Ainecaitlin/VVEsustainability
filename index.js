@@ -9,8 +9,19 @@ var express = require('express');
 //require the http module
 // require the socket.io module & express
 const app = require('express')();
-const server = require('http').createServer(app);
-const io = require('socket.io').listen(server);
+const server = app.listen(8000);
+const io = require("socket.io")(server, {
+    handlePreflightRequest: (req, res) => {
+        console.log("Setting headers.");
+        const headers = {
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            "Access-Control-Allow-Origin": req.headers.origin, //or the specific origin you want to give access to,
+            "Access-Control-Allow-Credentials": true
+        };
+        res.writeHead(200, headers);
+        res.end();
+    }
+});
 // Port setting
 var port = 8000;
 var listener = server.listen(port, function(){
@@ -24,13 +35,22 @@ const db = require('./config/key').MongoURI;
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 .then(() => {
     console.log('DB connected...');
-    //setup event listener AFTER DB connection fulfills promise
-    io.on("connect", socket  =>  {
+    
+})
+.catch(err => console.log(err));
+//setup event listener AFTER DB connection fulfills promise
+    io.origins((origin, callback) => {
+  if (origin !== 'http://64.227.79.217') {
+    return callback('origin not allowed', false);
+  }
+  callback(null, true);
+});
+    io.sockets.on("connect", socket  =>  {
         console.log("user connected");
         socket.on("disconnect", function() {
             console.log("user disconnected");
         });  
-        io.on("chat message", function(msg) {
+        io.sockets.on("chat message", function(msg) {
             console.log("message: "  +  msg);
             //broadcast message from client A to all clients
             io.sockets.broadcast.emit("received", { message: msg  });
@@ -40,9 +60,6 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreat
             chatMessage.save();
         })
     });
-})
-.catch(err => console.log(err));
-
 //other setting  
 app.set('view engine', 'ejs');
 app.set('views', './views/');
