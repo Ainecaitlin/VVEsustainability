@@ -1,6 +1,6 @@
 <!doctype html>
 <html>
-    <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
     
       <script src="/givemejquery"></script>
@@ -25,8 +25,13 @@
     <form action="">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
-<script>
+<script type="text/javascript">
   $(function () {
+      
+      const socket = new io('ws://64.227.79.217:8000/chats',{
+        transports: ['websocket'],
+          upgrade: false
+    });
       var chatData = <%- JSON.stringify(chatData) %>;
       console.log("printing client-side data recieved: " + chatData);
     //fetch("/chats").then(json  =>  {
@@ -42,10 +47,10 @@ $('#messages').append($('<li>').text(chatData[i].message));
     .appendChild(span)
     .append("by "  +  chatData.sender  +  ": "    /*formatTimeAgo(chatData.createdAt));*/
       
-    const socket = io.connect('64.227.79.217:8000');
     $('form').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val()); 
+        console.log("Emitting Message")
       $('#m').val('');
       return false;
     });

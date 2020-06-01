@@ -8,9 +8,12 @@ var util = require('./util');
 var express = require('express');
 //require the http module
 // require the socket.io module & express
-const app = require('express')();
-const server = app.listen(8000);
-const io = require("socket.io")(server, {
+
+var app = require('express')();
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
+io.set("transports", ["websocket"]);
+/*http.listen(8000);(server, {
     handlePreflightRequest: (req, res) => {
         console.log("Setting headers.");
         const headers = {
@@ -21,16 +24,29 @@ const io = require("socket.io")(server, {
         res.writeHead(200, headers);
         res.end();
     }
-});
+});*/
 // Port setting
 var port = 8000;
-var listener = server.listen(port, function(){
-  console.log('server on! http://localhost:'+port + "app.get(port) = " + app.get('port'));
 
 const path = require('path')
 // DB setting
 const db = require('./config/key').MongoURI;
 //Connect Express
+io.on('connection', socket  =>  {
+        console.log("user connected");
+        socket.on('disconnect', function() {
+            console.log("user disconnected");
+        });  
+        socket.on('chat message', function(msg) {
+            console.log("message: "  +  msg);
+            //broadcast message from client A to all clients
+            io.broadcast.emit("received", { message: msg  });
+            //
+            //I am testing if the message functionality stores this message or not
+            let  chatMessage  =  new Chat({ message: msg, sender: "Anonymous"});
+            chatMessage.save();
+        })
+    });
 //Connect mongo
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 .then(() => {
@@ -39,27 +55,13 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreat
 })
 .catch(err => console.log(err));
 //setup event listener AFTER DB connection fulfills promise
-    io.origins((origin, callback) => {
+ /*   io.origins((origin, callback) => {
   if (origin !== 'http://64.227.79.217') {
     return callback('origin not allowed', false);
   }
   callback(null, true);
-});
-    io.sockets.on("connect", socket  =>  {
-        console.log("user connected");
-        socket.on("disconnect", function() {
-            console.log("user disconnected");
-        });  
-        io.sockets.on("chat message", function(msg) {
-            console.log("message: "  +  msg);
-            //broadcast message from client A to all clients
-            io.sockets.broadcast.emit("received", { message: msg  });
-            //********** DEBUG ****************//
-            //I am testing if the message functionality stores this message or not
-            let  chatMessage  =  new Chat({ message: msg, sender: "Anonymous"});
-            chatMessage.save();
-        })
-    });
+});*/
+    
 //other setting  
 app.set('view engine', 'ejs');
 app.set('views', './views/');
@@ -93,7 +95,10 @@ app.get('/givemejquery', function(req, res){ //Providing the client with our jqu
     res.sendFile(__dirname + '/node_modules/jquery/dist/jquery.js');
 });
     app.get('/givemeasocket', function(req, res){ //Providing the client with our socket.js
-        res.sendFile(__dirname + '/node_modules/socket.io/socket.io.js');
+        res.sendFile(__dirname + '/node_modules/socket.io/lib/socket.js');
     });
 /* ************** */
+http.listen(port, function(){
+  console.log('server on! http://localhost:'+port + "app.get(port) = " + app.get('port'));
+
 });
