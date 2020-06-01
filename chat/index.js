@@ -29,6 +29,6 @@ io.on('connection', function(socket){ //connect/disconnect message
   });
 });
 
-http.listen(3000, function(){
+http.listen(8000, function(){
   console.log('listening on *:3000');
 });
