@@ -19,22 +19,21 @@ body {
 #fullpage .section .fp-tableCell{
   width: 100vw;
 }
-#fullpage .section h2{
-  color: white;
-  text-align: center;
-  width: 100%;
-}
 #fullpage .section h1{
   color: white;
   text-align: center;
   width: 100%;
 }
-#fp-nav ul li a span{
-  background: white;
+#fullpage .section h2{
+  color: white;
+  text-align: center;
+  width: 100%;
 }
 #fullpage .section p{
   color: white;
   width: 50%;
   margin: auto;
 }
-
+#fp-nav ul li a span{
+  background: white;
+}

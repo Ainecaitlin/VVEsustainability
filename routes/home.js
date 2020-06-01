@@ -87,7 +87,7 @@ router.get('/finanace-search', function(req, res){
 // Side navigation
 //find vve
 router.get('/map', function(req, res){
-  res.render('map');
+  res.render('map/map');
 });
 //newsletter
 router.get('/newsletter', function(req, res){

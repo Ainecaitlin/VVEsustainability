@@ -9,13 +9,13 @@
 
     <div class="form mb-3">
 
-      <h3 class="contentBoxTop mb-3">New User</h3>
+      <h3 class="contentBoxTop mb-3">New VVE Board</h3>
 
       <form action="/users" method="post">
 
         <div class="row justify-content-center">
           <div class="col-sm-3">
-            <input type="text" id="username" name="username" placeholder="Username*" value="<%= user.username %>" class="form-control <%= (errors.username)?'is-invalid':'' %>">
+            <input type="text" id="username" name="username" placeholder="Streetname VVE" value="<%= user.username %>" class="form-control <%= (errors.username)?'is-invalid':'' %>">
             <% if(errors.username){ %>
               <span class="invalid-feedback"><%= errors.username.message %></span>
             <% } %>
@@ -23,7 +23,7 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-sm-3">
-            <input type="text" id="name" name="name" placeholder="Name*" value="<%= user.name %>" class="form-control <%= (errors.name)?'is-invalid':'' %>">
+            <input type="text" id="name" name="name" placeholder="Postal code VVE" value="<%= user.name %>" class="form-control <%= (errors.name)?'is-invalid':'' %>">
             <% if(errors.name){ %>
               <span class="invalid-feedback"><%= errors.name.message %></span>
             <% } %>
@@ -31,7 +31,7 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-sm-3">
-            <input type="text" id="email" name="email" placeholder="Email" value="<%= user.email %>" class="form-control <%= (errors.email)?'is-invalid':'' %>">
+            <input type="text" id="email" name="email" placeholder="City VVE" value="<%= user.email %>" class="form-control <%= (errors.email)?'is-invalid':'' %>">
             <% if(errors.email){ %>
               <span class="invalid-feedback"><%= errors.email.message %></span>
             <% } %>
@@ -39,7 +39,7 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-sm-3">
-            <input type="password" id="password" name="password" placeholder="Password*" value="" class="form-control <%= (errors.password)?'is-invalid':'' %>">
+            <input type="password" id="password" name="password" placeholder="KvK Number" value="" class="form-control <%= (errors.password)?'is-invalid':'' %>">
             <% if(errors.password){ %>
               <span class="invalid-feedback"><%= errors.password.message %></span>
             <% } %>
@@ -47,13 +47,22 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-sm-3">
-            <input type="password" id="passwordConfirmation" name="passwordConfirmation" placeholder="Password Confirmation*" value="" class="form-control <%= (errors.passwordConfirmation)?'is-invalid':'' %>">
+            <input type="password" id="passwordConfirmation" name="construction Year" placeholder="Password Confirmation*" value="" class="form-control <%= (errors.passwordConfirmation)?'is-invalid':'' %>">
             <% if(errors.passwordConfirmation){ %>
               <span class="invalid-feedback"><%= errors.passwordConfirmation.message %></span>
             <% } %>
           </div>
         </div>
         <div class="row justify-content-center">
+            <div class="col-sm-3">
+              <input type="text" id="username" name="username" placeholder="Number of Appartments" value="<%= user.username %>" class="form-control <%= (errors.username)?'is-invalid':'' %>">
+              <% if(errors.username){ %>
+                <span class="invalid-feedback"><%= errors.username.message %></span>
+              <% } %>
+            </div>
+          </div>
+        <div class="row justify-content-center">
+          
           <div class="col-sm-3 ">
             <select class="custom-select" id="inlineFormCustomSelectPref">
               <option selected>I am..*</option>
@@ -63,10 +72,6 @@
             </select>
           </div>
         </div>
-
-        <p>
-          <small>*Required</small>
-        </p>
 
         <% if(errors.unhandled){ %>
           <div class="alert alert-danger">

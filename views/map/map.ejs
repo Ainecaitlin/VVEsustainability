@@ -1,0 +1,95 @@
+<!DOCTYPE html This is the Beta EJS page for the Map>
+   
+<html>
+     <% var apartmentArray; %>
+  <head>
+    <%- include('../partials/head') %> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>VVE Map</title>
+  <style>
+    #map{
+      height:400px;
+      width:80%;
+    }
+       html, body {
+        height: 100px;
+        width: 100%;
+        background-color: grey;
+      }
+  </style>
+  </head>
+  <body>
+   <%- include('../partials/nav') %>
+      <body>
+  <h1>VVE Map</h1>
+  <div id="map"></div>
+  <script>
+     
+      var markers = [];
+      var infowindows = [];
+    window.initMap = async function (){
+        console.log("Javascript init");
+      try {
+      var geoArray = <%- JSON.stringify(data) %>;
+      console.log(geoArray);
+          }catch(e){
+              console.log("Error whilst trying to parse apartmentArray into geoArray" + e);
+          }finally{
+            /*New map*/
+              
+      /* Map options*/
+      var options = {
+        zoom:8,
+        center:{lat:52.679713,lng:6.208649}
+      }
+      var map = new google.maps.Map(document.getElementById('map'), options);
+      for(i = 0; i < geoArray.length; i++) {
+          /*For every Apartment collection object recieved, push the data into the marker*/
+         // var myLatLng = new google.maps.LatLng(parseFloat(geoArray[i].latitude), parseFloat(geoArray[i].longitude));
+        //  console.log(myLatLng);
+          var LatLng = new google.maps.LatLng(parseFloat(geoArray[i].latitude),parseFloat(geoArray[i].longitude));
+          console.log("Pushing Marker at: ");
+          console.log(LatLng);
+          //******** Concat all the VVE Energy Attributes into a String to display to the relevant infoWindow
+          var concatString = "<p>";
+          for(var attribute in geoArray[i].status){
+                concatString = concatString + " " + attribute + ": " + geoArray[i].status[attribute] + "/7 steps completed<br>";
+              
+          }
+          concatString = concatString + "</p>";
+          infowindows.push(new google.maps.InfoWindow({
+                    content: concatString//The VVE attributes are in a status object, which I'm converting to a string
+            }));
+          var title = geoArray[i].address.street;
+          markers.push(new google.maps.Marker({
+            position : LatLng,
+            iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            map : map,
+            title : title
+      }));
+        google.maps.event.addListener(markers[i], 'click', (function(marker, i) {
+      return function() {
+        infowindows[i].open(map, markers[i]);
+      }
+    })(markers[i], i));
+      }  
+          }
+    }
+    
+    function connectInformation(length){
+        for( i =0; i < length; i++){
+          google.maps.event.addListener(markers[i],'click', function() {
+    infowindows[i].open(map, markers[i]);
+  });
+        }
+    }
+  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdQTZ6aF6mlREwAEuYOtzhvw6MCpNZVaw&callback=initMap">
+    </script>
+</body>
+    
+  </body>
+</html>
