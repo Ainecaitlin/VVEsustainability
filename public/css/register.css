@@ -35,7 +35,9 @@ body {
     background: white;
     color: black;
 }
-
+.initial {
+	display: inline-block;
+}
 .col-sm-3  input{
     outline: 1;
     background: white;
