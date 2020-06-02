@@ -83,6 +83,9 @@ router.get('/finance-information', function(req, res){
 router.get('/finanace-search', function(req, res){
   res.render('posts');
 });
+router.get('/shop', function(req, res){
+  res.render('shop/shop');
+});
 
 // Side navigation
 //find vve
