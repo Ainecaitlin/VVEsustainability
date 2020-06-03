@@ -26,7 +26,7 @@
   <h1>VVE Map</h1>
   <div id="map"></div>
   <script>
-     
+     //****** Contributor: Rayyan Jafri *******//
       var markers = [];
       var infowindows = [];
     window.initMap = async function (){
@@ -47,8 +47,6 @@
       var map = new google.maps.Map(document.getElementById('map'), options);
       for(i = 0; i < geoArray.length; i++) {
           /*For every Apartment collection object recieved, push the data into the marker*/
-         // var myLatLng = new google.maps.LatLng(parseFloat(geoArray[i].latitude), parseFloat(geoArray[i].longitude));
-        //  console.log(myLatLng);
           var LatLng = new google.maps.LatLng(parseFloat(geoArray[i].latitude),parseFloat(geoArray[i].longitude));
           console.log("Pushing Marker at: ");
           console.log(LatLng);
@@ -63,12 +61,14 @@
                     content: concatString//The VVE attributes are in a status object, which I'm converting to a string
             }));
           var title = geoArray[i].address.street;
+          /* Dynamically add the newly created marker to the array of markers */ 
           markers.push(new google.maps.Marker({
             position : LatLng,
             iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
             map : map,
             title : title
       }));
+      /* Every marker needs an event listener, and a relation to the infowindows array using the same index to link the pop-up message box*/
         google.maps.event.addListener(markers[i], 'click', (function(marker, i) {
       return function() {
         infowindows[i].open(map, markers[i]);
@@ -77,7 +77,7 @@
       }  
           }
     }
-    
+    /* This is where each marker is related to each listener */
     function connectInformation(length){
         for( i =0; i < length; i++){
           google.maps.event.addListener(markers[i],'click', function() {
