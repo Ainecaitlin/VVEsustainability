@@ -32,6 +32,8 @@
         transports: ['websocket'],
           upgrade: false
     });
+      socket.on('connect', function(socket){
+         
       var chatData = <%- JSON.stringify(chatData) %>;
       console.log("printing client-side data recieved: " + chatData);
     //fetch("/chats").then(json  =>  {
@@ -57,7 +59,7 @@ $('#messages').append($('<li>').text(chatData[i].message));
     socket.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
     });
-  
+   
       
 //});
 
@@ -69,6 +71,8 @@ $('#messages').append($('<li>').text(chatData[i].message));
     messages.appendChild(span).append("by " + "anonymous" + ": " + "just now");
     console.log("Hello bingo!");
   });/*}).catch(err => { console.log(err); });*/
+      });
+      
       });
 </script>
 
