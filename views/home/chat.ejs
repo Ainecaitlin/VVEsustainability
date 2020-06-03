@@ -32,7 +32,7 @@
         transports: ['websocket'],
           upgrade: false
     });
-      socket.on('connect', function(socket){
+      socket.on('connect', function(){
          
       var chatData = <%- JSON.stringify(chatData) %>;
       console.log("printing client-side data recieved: " + chatData);
