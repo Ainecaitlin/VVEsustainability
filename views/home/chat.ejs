@@ -26,15 +26,18 @@
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
 <script type="text/javascript">
-  $(function () {
-      
-      const socket = new io('ws://64.227.79.217:8000/chats',{
+    /*var io = new io('ws://64.227.79.217:8000/chats',{
         transports: ['websocket'],
           upgrade: false
+    });*/
+  //  var io = require('socket.io-client');
+    var sock = new io('/chats', {
+      //  transports: ['websocket'],
+        upgrade: false
     });
-      socket.on('connect', function(){
-         
-      var chatData = <%- JSON.stringify(chatData) %>;
+  $(function () {
+      //********** PREVIOUS CHAT MESSAGES ************//
+      var chatData = <%- JSON.stringify(chatData) %>; 
       console.log("printing client-side data recieved: " + chatData);
     //fetch("/chats").then(json  =>  {
 //J//SON.parse(chatData  =>  {
@@ -45,25 +48,29 @@ let  span  =  document.createElement("span");
 $('#messages').append($('<li>').text(chatData[i].message));
           $('#messages').append($('<span>').text("by " + chatData[i].sender));
       }
+      //**************** REAL_TIME SOCKET INI ***************//
+      sock.on('connect', function(){
+        console.log(sock.id); //This is to allow the socket object to establish, print the ID, then continue further [Timeout Bug Fix]
+    
     /*messages
     .appendChild(span)
     .append("by "  +  chatData.sender  +  ": "    /*formatTimeAgo(chatData.createdAt));*/
       
-    $('form').submit(function(e){
+    $('form').submit(function(e){ //onClick of submit, use anonymous function
       e.preventDefault(); // prevents page reloading
-      socket.emit('chat message', $('#m').val()); 
+      sock.emit('chat message', $('#m').val()); //Encode this text with 'chat message' for server to sort
         console.log("Emitting Message")
       $('#m').val('');
       return false;
     });
-    socket.on('chat message', function(msg){
+    sock.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
     });
    
       
 //});
 
-    socket.on("received", msgData => {
+    sock.on("received", msgData => {
     let li = document.createElement("li");
     let span = document.createElement("span");
     var messages = document.getElementById("messages");

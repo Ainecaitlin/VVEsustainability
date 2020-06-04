@@ -1,3 +1,4 @@
+//*************Contributor: Rayyan Jafri *************//
 var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
@@ -10,7 +11,7 @@ var chatArray = [];
 //var socket = io();
 const Chat = require("./chatschema.js");
 const fetch = require("node-fetch");
-        /****** SCHEMA **********/
+/****** SCHEMA **********/
 //Define a schema
 const Schema = mongoose.Schema; //To make my life easier
 var MapSchema = Schema; //Define variable that will contain our map data
@@ -26,24 +27,6 @@ var MapModelSchema = new Schema(
  address : { street : Schema.Types.String, number : Schema.Types.Number, city : Schema.Types.String, post_code : Schema.Types.String }
 }
 ); 
-//
-/*
-io.on('connection', socket  =>  {
-        console.log("user connected");
-        socket.on('disconnect', function() {
-            console.log("user disconnected");
-        });  
-        socket.on('chat message', function(msg) {
-            console.log("message: "  +  msg);
-            //broadcast message from client A to all clients
-            io.broadcast.emit("received", { message: msg  });
-            //
-            //I am testing if the message functionality stores this message or not
-            let  chatMessage  =  new Chat({ message: msg, sender: "Anonymous"});
-            chatMessage.save();
-        })
-    });
-*/
 /* I made this function so unnecessary replication of data and extra computations are not done
 If a model already exists, we will simply use that model instead of creating a new one*/
 function modelAlreadyDeclared () {

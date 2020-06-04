@@ -10,11 +10,11 @@ var util = require('./util');
 var express = require('express');
 //require the http module
 // require the socket.io module & express
-
+var Chat = require('./routes/chatschema.js')
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-io.set("transports", ["websocket"]);
+io.set("transports", ["polling"]);
 
 // Port setting
 var port = 8000;
@@ -22,20 +22,25 @@ var port = 8000;
 const path = require('path')
 // DB setting
 const db = require('./config/key').MongoURI;
-//Catch a connection event that has been routed to the node server
-io.on('connection', socket  =>  {
-        console.log("user connected");
+//Catch a connection event that has been routed to the node server into nameSpace /chats
+var nameSpace = io.of('/chats'); 
+nameSpace.on('connection', socket  =>  {
+        console.log("user connected, migrating user to general chat.");
+        socket.join('general chat');
         socket.on('disconnect', function() {
             console.log("user disconnected");
         });  
         socket.on('chat message', function(msg) {
-            console.log("message: "  +  msg);
-            //broadcast message from client A to all clients
-            io.broadcast.emit("received", { message: msg  });
-            //
+            for(var room in socket.rooms){ //Iterating the list of rooms the client is in, it should never exceed 1
+                console.log("message: "  +  msg + "User: " + "" + "Room:" + room);
+                //broadcast message from client A to all clients in client A's current room
+                nameSpace.to(room).emit("received", { message: msg  });
+                
             //I am testing if the message functionality stores this message or not
-            let  chatMessage  =  new Chat({ message: msg, sender: "Anonymous"});
+            let  chatMessage  =  new Chat({ message: msg, sender: "Anonymous", chatroom: room });
             chatMessage.save();
+            }
+            //
         })
     });
 //Connect Mongo
