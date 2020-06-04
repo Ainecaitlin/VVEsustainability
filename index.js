@@ -26,6 +26,7 @@ const db = require('./config/key').MongoURI;
 var nameSpace = io.of('/chats'); 
 nameSpace.on('connection', socket  =>  {
         console.log("user connected, migrating user to general chat.");
+        socket.leave(socket.id); //Bug Fix for dual entries
         socket.join('general chat');
         socket.on('disconnect', function() {
             console.log("user disconnected");
