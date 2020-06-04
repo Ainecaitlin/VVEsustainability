@@ -3,6 +3,8 @@ var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
 var fs = require('fs');
+//************* AUTHENTICATION *********************//
+const connectEnsureLogin = require('connect-ensure-login');
 var passport = require('../config/passport');
 var apartmentArray = [];
 var mapDataModel;
@@ -11,6 +13,7 @@ var chatArray = [];
 //var socket = io();
 const Chat = require("./chatschema.js");
 const fetch = require("node-fetch");
+var userName;
 /****** SCHEMA **********/
 //Define a schema
 const Schema = mongoose.Schema; //To make my life easier
@@ -43,8 +46,8 @@ router.get('/', function (req, res) {
     apartmentArray = loadMap(res);
 });
 // Click on Chat
-router.get('/chats', function (req, res){
-    
+router.get('/chats', connectEnsureLogin.ensureLoggedIn(), function (req, res){
+   
     chatArray = loadChat(res);
 });
 async function loadMap(res){
@@ -96,8 +99,8 @@ async function loadChat(res){
          //res.sendFile(__dirname + '/chat.html');
          //console.log("Sending Chat.html via RES");
          
-        res.render('home/chat.ejs', {chatData: docs});
-        console.log("Chat.ejs rendering... Chat messages: " + docs.length);
+        res.render('home/chat.ejs', {chatData: docs, userName: userName});
+        console.log("Chat.ejs rendering... username: " + userName);
          
         return docs;
      }
@@ -136,6 +139,8 @@ router.post('/login',
     }
 
     if(isValid){
+        userName = req.body.username;
+        console.log("username set to:" + userName);
       next();
     }
     else {

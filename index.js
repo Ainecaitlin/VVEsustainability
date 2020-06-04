@@ -5,6 +5,8 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var flash = require('connect-flash');
 var session = require('express-session');
+//******** AUTHENTICATION **********//
+const connectEnsureLogin = require('connect-ensure-login');
 var passport = require('./config/passport');
 var util = require('./util');
 var express = require('express');
@@ -31,14 +33,14 @@ nameSpace.on('connection', socket  =>  {
         socket.on('disconnect', function() {
             console.log("user disconnected");
         });  
-        socket.on('chat message', function(msg) {
+        socket.on('chat message', function(data) {
             for(var room in socket.rooms){ //Iterating the list of rooms the client is in, it should never exceed 1
-                console.log("message: "  +  msg + "User: " + "" + "Room:" + room);
+                console.log("message: "  +  data.message + "User: " + data.sender + "Room:" + room);
                 //broadcast message from client A to all clients in client A's current room
-                nameSpace.to(room).emit("received", { message: msg  });
+                nameSpace.to(room).emit("received", { message: data.message, sender: data.sender  });
                 
             //I am testing if the message functionality stores this message or not
-            let  chatMessage  =  new Chat({ message: msg, sender: "Anonymous", chatroom: room });
+            let  chatMessage  =  new Chat({ message: data.message, sender: data.sender, chatroom: room });
             chatMessage.save();
             }
             //
@@ -76,8 +78,8 @@ app.use(function(req,res,next){
 
 // Routes
 app.use('/', require('./routes/home'));
-app.use('/posts', util.getPostQueryString, require('./routes/posts'));
-app.use('/users', require('./routes/users'));
+app.use('/posts', connectEnsureLogin.ensureLoggedIn(),util.getPostQueryString, require('./routes/posts'));
+app.use('/users', connectEnsureLogin.ensureLoggedIn(),require('./routes/users'));
 app.use('/comments', util.getPostQueryString, require('./routes/comments'));
 app.use('/files', require('./routes/files'));
 app.use('/chats', require('./routes/home')); //Routing all requests for the chat into home 
