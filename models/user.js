@@ -3,6 +3,7 @@ var bcrypt = require('bcryptjs');
 
 // schema
 var userSchema = mongoose.Schema({
+
   username:{
     type:String,
     required:[true,'Username is required!'],
@@ -15,15 +16,46 @@ var userSchema = mongoose.Schema({
     required:[true,'Password is required!'],
     select:false
   },
-  name:{
+  firstname:{
     type:String,
-    required:[true,'Name is required!'],
+    required:[true,'First name is required!'],
     match:[/^.{1,12}$/,'Should be 1-12 characters!'],
     trim:true
   },
+  lastname:{
+    type:String,
+    required:[true,'Last name is required!'],
+    match:[/^.{1,12}$/,'Should be 1-12 characters!'],
+    trim:true
+  },
+  intial:{
+    type:String,
+    required:[false,'Initial is  not required.'],
+    match:[/^.{1,5}$/,'Should be 1-5 characters!'],
+    trim:true
+  },
+  boardativationcode:{
+    type:String,
+    required:[false,'Activation code is required!'],
+    match:[/AA11/,'Please contact VVEsupport@support.com for an invitation to the platform.'],
+    trim:true
+  },
+  gmativationcode:{
+    type:String,
+    required:[false,'Activation code is required!'],
+    match:[/AA12/,'Please contact your VVE Board for an invitation to the platform.'],
+    trim:true
+  },  
+
   email:{
     type:String,
     match:[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,'Should be a vaild email address!'],
+    trim:true
+  },
+  
+   kvknumber:{
+	 type: String,
+     match:[/^[a-zA-Z0-9._%+-]/,'Should be a vaild email address!'],
     trim:true
   },
   type:{

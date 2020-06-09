@@ -3,7 +3,7 @@
   <head>
     <%- include('../partials/head') %>
     <link rel="stylesheet" href="/css/register.css">
-	<link rel="stylesheet" href="path/to/intlTelInput.css">
+	<link rel="stylesheet" href="node_modules/intl-tel-input/src/css/intlTelInput.css">
   </head>
   <body>
     <%- include('../partials/nav') %>
@@ -19,7 +19,7 @@
           <div class="col-sm-3">
             <input type="text" id="firstname" name="firstname" placeholder="First Name*" value="<%= user.firstname %>" class="form-control <%= (errors.name)?'is-invalid':'' %>">
             <% if(errors.name){ %>
-              <span class="invalid-feedback"><%= errors.name.message %></span>
+              <span class="invalid-feedback"><%= errors.firstname.message %></span>
             <% } %>
           </div>
         </div>
@@ -37,7 +37,7 @@
           <div class="col-sm-3">
             <input type="text" id="lastname" name="lastname" placeholder="Last Name*" value="<%= user.lastname %>" class="form-control <%= (errors.name)?'is-invalid':'' %>">
             <% if(errors.name){ %>
-              <span class="invalid-feedback"><%= errors.name.message %></span>
+              <span class="invalid-feedback"><%= errors.lastname.message %></span>
             <% } %>
           </div>
         </div>
@@ -56,15 +56,6 @@
             <input type="text" id="email" name="email" placeholder="Email" value="<%= user.email %>" class="form-control <%= (errors.email)?'is-invalid':'' %>">
             <% if(errors.email){ %>
               <span class="invalid-feedback"><%= errors.email.message %></span>
-            <% } %>
-          </div>
-        </div>
-		
-		<div class="row justify-content-center">
-          <div class="col-sm-3">
-            <input type="text" id="phonenumber" name="phonenumber" placeholder="Phone Number*" value="" class="form-control <%= (errors.phonenumber)?'is-invalid':'' %>">
-            <% if(errors.phonenumber){ %>
-              <span class="invalid-feedback"><%= errors.phonenumber.message %></span>
             <% } %>
           </div>
         </div>
@@ -103,7 +94,7 @@
 <!--Dependant on option value, based on master --!>
 		<div class="row justify-content-center">
           <div class="col-sm-3">
-            <input type="text" id="boardactivationcode" name="boardactivationcode" placeholder="BM Activation Code*" value="" class="form-control <%= (errors.activationcode)?'is-invalid':'' %>">
+            <input type="text" id="boardactivationcode" name="boardactivationcode" placeholder="Activation Code*" value="" class="form-control <%= (errors.activationcode)?'is-invalid':'' %>">
             <% if(errors.activationcode){ %>
               <span class="invalid-feedback"><%= errors.activationcode.message %></span>
             <% } %>
@@ -130,50 +121,7 @@
           </div>
         </div>
 		
-		<div class="row justify-content-center">
-          <div class="col-sm-3">
-            <input type="text" id="streetname" name="streetname" placeholder="Streetname*" value="" class="form-control <%= (errors.streetname)?'is-invalid':'' %>">
-            <% if(errors.streetname){ %>
-              <span class="invalid-feedback"><%= errors.streetname.message %></span>
-            <% } %>
-          </div>
-        </div>
-		
-		<div class="row justify-content-center">
-          <div class="col-sm-3">
-            <input type="text" id="housenumber" name="housenumber" placeholder="House number*" value="" class="form-control <%= (errors.housenumber)?'is-invalid':'' %>">
-            <% if(errors.housenumber){ %>
-              <span class="invalid-feedback"><%= errors.housenumber.message %></span>
-            <% } %>
-          </div>
-        </div>
-		
-		<div class="row justify-content-center">
-          <div class="col-sm-3">
-            <input type="text" id="addition" name="addition" placeholder="Addition" value="" class="form-control <%= (errors.addition)?'is-invalid':'' %>">
-            <% if(errors.addition){ %>
-              <span class="invalid-feedback"><%= errors.addition.message %></span>
-            <% } %>
-          </div>
-        </div>
-		
-		<div class="row justify-content-center">
-          <div class="col-sm-3">
-            <input type="text" id="postalcode" name="postalcode" placeholder="Postal code*" value="" class="form-control <%= (errors.postalcode)?'is-invalid':'' %>">
-            <% if(errors.postalcode){ %>
-              <span class="invalid-feedback"><%= errors.postalcode.message %></span>
-            <% } %>
-          </div>
-        </div>
-		
-		<div class="row justify-content-center">
-          <div class="col-sm-3">
-            <input type="text" id="city" name="city" placeholder="City*" value="" class="form-control <%= (errors.city)?'is-invalid':'' %>">
-            <% if(errors.city){ %>
-              <span class="invalid-feedback"><%= errors.city.message %></span>
-            <% } %>
-          </div>
-        </div>
+
 
 
 		
@@ -213,56 +161,18 @@
 		$('#gmactivationcode').removeAttr('required');
 		$('#gmactivationcode').removeAttr('data-error');
 	  }
-	  
-	  
 	  if ($(this).val() == "3") {
-		$('#streetname').show();
-		$('#streetname').attr('required', '');
-		$('#streetname').attr('data-error', 'This field is required.');
-		
+
 		$('#kvknumber').show();
 		$('#kvknumber').attr('required', '');
 		$('#kvknumber').attr('data-error', 'This field is required.');
-		
-		$('#addition').show();
-		$('#addition').attr('required', '');
-		$('#addition').attr('data-error', 'This field is required.');
-		
-		$('#housenumber').show();
-		$('#housenumber').attr('required', '');
-		$('#housenumber').attr('data-error', 'This field is required.');
-		
-		$('#city').show();
-		$('#city').attr('required', '');
-		$('#city').attr('data-error', 'This field is required.');
-		
-		$('#postalcode').show();
-		$('#postalcode').attr('required', '');
-		$('#postalcode').attr('data-error', 'This field is required.');
+
 	  } else {
-		$('#streetname').hide();
-		$('#streetname').removeAttr('required');
-		$('#streetname').removeAttr('data-error');
-		
-		$('#addition').hide();
-		$('#addition').removeAttr('required');
-		$('#addition').removeAttr('data-error');
-		
-		$('#housenumber').hide();
-		$('#housenumber').removeAttr('required');
-		$('#housenumber').removeAttr('data-error');
-		
+
 		$('#kvknumber').hide();
 		$('#kvknumber').removeAttr('required');
 		$('#kvknumber').removeAttr('data-error');
-		
-		$('#city').hide();
-		$('#city').removeAttr('required');
-		$('#city').removeAttr('data-error');
-		
-		$('#postalcode').hide();
-		$('#postalcode').removeAttr('required');
-		$('#postalcode').removeAttr('data-error');
+
 	  }
 		   
 	});
