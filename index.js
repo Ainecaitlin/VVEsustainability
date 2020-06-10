@@ -20,32 +20,43 @@ io.set("transports", ["polling"]);
 
 // Port setting
 var port = 8000;
-
 const path = require('path')
 // DB setting
 const db = require('./config/key').MongoURI;
 //Catch a connection event that has been routed to the node server into nameSpace /chats
-var nameSpace = io.of('/chats'); 
-nameSpace.on('connection', socket  =>  {
-        console.log("user connected, migrating user to general chat.");
-        socket.leave(socket.id); //Bug Fix for dual entries
-        socket.join('general chat');
-        socket.on('disconnect', function() {
-            console.log("user disconnected");
-        });  
-        socket.on('chat message', function(data) {
-            for(var room in socket.rooms){ //Iterating the list of rooms the client is in, it should never exceed 1
-                console.log("message: "  +  data.message + "User: " + data.sender + "Room:" + room);
+//Create an Array of NameSpaces, For each run the code below
+var nameSpaces = [];
+var rooms = ['General-Chat','Solar-Panel','Finance', 'Charging-Station' ];
+/*var fs = require('fs');
+var array = fs.readFileSync('./config/chatroomMasterFile.txt').toString().split("\n");
+for(i in array) {
+    console.log("adding room:" + array[i]);
+    rooms.push(array[i]);
+    console.log("rooms["+ i + "]: " + rooms[rooms.length-1]);
+} *///= 
+console.log("Pulling Chatroom Master file....:" + rooms[rooms.length-1]);
+var CHAT_ROOMS = 7; //The number of chatrooms, this variable controls the ini of sockets, namespaces and routes.
+for(var room in rooms){
+    nameSpaces.push(io.of('/chats' + room)); //domain.com/chats/General-Chat
+	console.log("Creating namespace /chats" + room);
+    nameSpaces[nameSpaces.length-1].on('connection', socket  =>  {
+            console.log("user connected to Channel:" + i + " , migrating user to general chat.");
+            socket.leave(socket.id); //Bug Fix for dual entries
+            socket.join(room);
+            socket.on('disconnect', function() {
+                console.log("user disconnected");
+            });  
+            socket.on('chat message', function(data) {
+                console.log("message: "  +  data.message + "User: " + data.sender + "Room:" + rooms[i]);
                 //broadcast message from client A to all clients in client A's current room
-                nameSpace.to(room).emit("received", { message: data.message, sender: data.sender  });
+                nameSpaces[i].to(room).emit("received", { message: data.message, sender: data.sender  });
                 
             //I am testing if the message functionality stores this message or not
-            let  chatMessage  =  new Chat({ message: data.message, sender: data.sender, chatroom: room });
+            let  chatMessage  =  new Chat({ message: data.message, sender: data.sender, chatroom: rooms[i] });
             chatMessage.save();
-            }
-            //
         })
     });
+}
 //Connect Mongo
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 .then(() => {
@@ -53,7 +64,6 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreat
     //Wait for the Promise to be fulfilled
 })
 .catch(err => console.log(err));
-    
 //other setting  
 app.set('view engine', 'ejs');
 app.set('views', './views/');
@@ -82,7 +92,9 @@ app.use('/posts', connectEnsureLogin.ensureLoggedIn(),util.getPostQueryString, r
 app.use('/users', connectEnsureLogin.ensureLoggedIn(),require('./routes/users'));
 app.use('/comments', util.getPostQueryString, require('./routes/comments'));
 app.use('/files', require('./routes/files'));
-app.use('/chats', require('./routes/home')); //Routing all requests for the chat into home 
+//Dynamically add each chatroom route to our Express, redirecting to home for loading of Chat
+app.use('/chats/:rooms', require('./routes/home'));
+
 app.get('/givemejquery', function(req, res){ //Providing the client with our jquery
     res.sendFile(__dirname + '/node_modules/jquery/dist/jquery.js');
 });

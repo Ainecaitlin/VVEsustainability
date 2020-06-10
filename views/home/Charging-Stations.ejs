@@ -4,20 +4,12 @@
 
     
       <script src="/givemejquery"></script>
-    <button class="tablink" onclick="href='http://64.227.79.217/chats'" id="defaultOpen">General Chat</button>
-<button class="tablink" onclick="href='http://64.227.79.217/chats-solar">Solar Panels</button>
-<button class="tablink" onclick="href='http://64.227.79.217/chats-charging'">Charging Stations</button>
-<button class="tablink" onclick="href='http://64.227.79.217/chats-finance'">Finance</button>
-
-<div id="General-Chat" class="tabcontent">
-  <h3>Home</h3>
-  <p>Home is where the heart is..</p>
-</div>
+<a href="Solar-Panels" target="_blank" class="button">Solar Panels</a>
+    <a href="Charging-Stations" target="_blank" class="button">General Chat</a>
+    <a href="Finance" target="_blank" class="button">Finance</a>
     
-    
-<div id="Solar-Panel" class="tabcontent">
-  <h3>Solar Panel Discussion Room</h3>
-  <p>Home is where the heart is..</p>
+<div id="Charging-Stations" class="tabcontent">
+  <h3>Charging Station Discussion Room</h3>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -31,32 +23,8 @@
       #messages{height: 600px;}
     </style>
 </div>
-    <script>
-  // Hide all elements with class="tabcontent" by default */
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-
-  // Remove the background color of all tablinks/buttons
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].style.backgroundColor = "";
-  }
-
-  // Show the specific tab content
-  document.getElementById(pageName).style.display = "block";
-
-  // Add the specific color to the button used to open the tab content
-  elmnt.style.backgroundColor = color;
-
-// Get the element with id="defaultOpen" and click on it
-document.getElementById("defaultOpen").click(); 
-    </script>
   <head>
-    <title>Solar Panel General Chat</title>
-    <h1>Chat Room to discuss Solar Panels</h1>
+    <title>Charging Station Chat</title>
     
   <body>
     <ul id="messages"></ul>
@@ -64,12 +32,7 @@ document.getElementById("defaultOpen").click();
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
 <script type="text/javascript">
-    /*var io = new io('ws://64.227.79.217:8000/chats',{
-        transports: ['websocket'],
-          upgrade: false
-    });*/
-  //  var io = require('socket.io-client');
-    var sock = new io('/chats0', {
+    var sock = new io('/chats3', {
       //  transports: ['websocket'],
         upgrade: false
     });
@@ -79,8 +42,6 @@ document.getElementById("defaultOpen").click();
     let username = <%- JSON.stringify(userName)%>;
     
       console.log("printing client-side data recieved: " + chatData + "user: " + username);
-    //fetch("/chats").then(json  =>  {
-//J//SON.parse(chatData  =>  {
 let  li  =  document.createElement("li");
 let messages = document.getElementById("messages")
 let  span  =  document.createElement("span");
@@ -91,11 +52,6 @@ $('#messages').append($('<li>').text(chatData[i].message));
       //**************** REAL_TIME SOCKET INI ***************//
       sock.on('connect', function(){
         console.log(sock.id); //This is to allow the socket object to establish, print the ID, then continue further [Timeout Bug Fix]
-    
-    /*messages
-    .appendChild(span)
-    .append("by "  +  chatData.sender  +  ": "    /*formatTimeAgo(chatData.createdAt));*/
-      
     $('form').submit(function(e){ //onClick of submit, use anonymous function
       e.preventDefault(); // prevents page reloading
         var data = {message: $('#m').val(), 
@@ -109,9 +65,6 @@ $('#messages').append($('<li>').text(chatData[i].message));
       $('#messages').append($('<li>').text(msg));
     });
    
-      
-//});
-
     sock.on("received", msgData => {
     let li = document.createElement("li");
     let span = document.createElement("span");
@@ -119,7 +72,7 @@ $('#messages').append($('<li>').text(chatData[i].message));
     messages.appendChild(li).append(msgData.message);
     messages.appendChild(span).append("by " + msgData.sender + ": " + "just now");
     console.log("Hello bingo!");
-  });/*}).catch(err => { console.log(err); });*/
+  });
       });
       
       });

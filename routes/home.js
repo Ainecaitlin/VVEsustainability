@@ -10,13 +10,26 @@ var apartmentArray = [];
 var mapDataModel;
 var apartmentArray = [];
 var chatArray = [];
+const Schema = mongoose.Schema;
 //var socket = io();
-const Chat = require("./chatschema.js");
+const Chat  =  new Schema(
+    {
+    sender: {
+    type: Schema.Types.String,
+    },
+    chatroom: {
+    type: Schema.Types.String,
+    },
+	message: {
+		type: Schema.Types.String,
+	}
+});
+
+var rooms = {a:'General-Chat',b:'Solar-Panel',c:'Finance', d:'Charging-Station'};
 const fetch = require("node-fetch");
 var userName;
 /****** SCHEMA **********/
 //Define a schema
-const Schema = mongoose.Schema; //To make my life easier
 var MapSchema = Schema; //Define variable that will contain our map data
 /* The JSON Schema for an Apartment colllection according to the Database */
 var MapModelSchema = new Schema( 
@@ -46,9 +59,13 @@ router.get('/', function (req, res) {
     apartmentArray = loadMap(res);
 });
 // Click on Chat
-router.get('/chats', connectEnsureLogin.ensureLoggedIn(), function (req, res){
-   
-    chatArray = loadChat(res);
+var CHAT_ROOMS = 7
+router.get('/chats/:rooms', connectEnsureLogin.ensureLoggedIn(), function (req, res){
+    var room = req.params.room;
+	 var room3 = req.params.rooms;
+	var room2 = req.query.room;
+console.log("LOAD CHAT : " + room3);
+chatArray = loadChat(res, room3);
 });
 async function loadMap(res){
       /* Back-End code for obtaining VVE Geolocations*/
@@ -76,9 +93,10 @@ async function loadMap(res){
 });
     return rawApartmentArray;
 }
-async function loadChat(res){
+async function loadChat(res, room){
     //***Load all chat messages in the DB into a JSON and push to client-side***//
-    const chatQuery = Chat.find();
+    var model = mongoose.model(room, Chat, room);
+    const chatQuery = model.find(); //Query Chatroom Data
     var chatPromise = chatQuery.then(
     function (docs, err)
      {
@@ -99,8 +117,8 @@ async function loadChat(res){
          //res.sendFile(__dirname + '/chat.html');
          //console.log("Sending Chat.html via RES");
          
-        res.render('home/chat.ejs', {chatData: docs, userName: userName});
-        console.log("Chat.ejs rendering... username: " + userName);
+        res.render('home/' + room + '.ejs', {chatData: docs, userName: userName});
+        console.log("Chat: home/" + room + '.ejs', " rendering... username: " + userName);
          
         return docs;
      }
