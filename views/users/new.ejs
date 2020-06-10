@@ -17,8 +17,8 @@
 
         <div class="row justify-content-center">
           <div class="col-sm-3">
-            <input type="text" id="firstname" name="firstname" placeholder="First Name*" value="<%= user.firstname %>" class="form-control <%= (errors.name)?'is-invalid':'' %>">
-            <% if(errors.name){ %>
+            <input type="text" id="firstname" name="firstname" placeholder="First Name*" value="<%= user.firstname %>" class="form-control <%= (errors.firstname)?'is-invalid':'' %>">
+            <% if(errors.firstname){ %>
               <span class="invalid-feedback"><%= errors.firstname.message %></span>
             <% } %>
           </div>
@@ -35,8 +35,8 @@
 		
 		<div class="row justify-content-center">
           <div class="col-sm-3">
-            <input type="text" id="lastname" name="lastname" placeholder="Last Name*" value="<%= user.lastname %>" class="form-control <%= (errors.name)?'is-invalid':'' %>">
-            <% if(errors.name){ %>
+            <input type="text" id="lastname" name="lastname" placeholder="Last Name*" value="<%= user.lastname %>" class="form-control <%= (errors.lastname)?'is-invalid':'' %>">
+            <% if(errors.lastname){ %>
               <span class="invalid-feedback"><%= errors.lastname.message %></span>
             <% } %>
           </div>
@@ -94,9 +94,9 @@
 <!--Dependant on option value, based on master --!>
 		<div class="row justify-content-center">
           <div class="col-sm-3">
-            <input type="text" id="boardactivationcode" name="boardactivationcode" placeholder="Activation Code*" value="" class="form-control <%= (errors.activationcode)?'is-invalid':'' %>">
-            <% if(errors.activationcode){ %>
-              <span class="invalid-feedback"><%= errors.activationcode.message %></span>
+            <input type="text" id="boardactivationcode" name="boardactivationcode" placeholder="Activation Code*" value="" class="form-control <%= (errors.boardactivationcode)?'is-invalid':'' %>">
+            <% if(errors.boardactivationcode){ %>
+              <span class="invalid-feedback"><%= errors.boardactivationcode.message %></span>
             <% } %>
           </div>
         </div>
@@ -104,9 +104,9 @@
 		<!-- gm refering to general member--!>
 		<div class="row justify-content-center">
           <div class="col-sm-3">
-            <input type="text" id="gmactivationcode" name="gmactivationcode" placeholder="GM Activation Code*" value="" class="form-control <%= (errors.activationcode)?'is-invalid':'' %>">
-            <% if(errors.activationcode){ %>
-              <span class="invalid-feedback"><%= errors.activationcode.message %></span>
+            <input type="text" id="gmactivationcode" name="gmactivationcode" placeholder="Activation Code*" value="" class="form-control <%= (errors.gmactivationcode)?'is-invalid':'' %>">
+            <% if(errors.gmactivationcode){ %>
+              <span class="invalid-feedback"><%= errors.gmactivationcode.message %></span>
             <% } %>
           </div>
         </div>

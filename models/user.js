@@ -28,19 +28,19 @@ var userSchema = mongoose.Schema({
     match:[/^.{1,12}$/,'Should be 1-12 characters!'],
     trim:true
   },
-  intial:{
+  initial:{
     type:String,
     required:[false,'Initial is  not required.'],
     match:[/^.{1,5}$/,'Should be 1-5 characters!'],
     trim:true
   },
-  boardativationcode:{
+  boardactivationcode:{
     type:String,
     required:[false,'Activation code is required!'],
     match:[/AA11/,'Please contact VVEsupport@support.com for an invitation to the platform.'],
     trim:true
   },
-  gmativationcode:{
+  gmactivationcode:{
     type:String,
     required:[false,'Activation code is required!'],
     match:[/AA12/,'Please contact your VVE Board for an invitation to the platform.'],
@@ -58,7 +58,7 @@ var userSchema = mongoose.Schema({
      match:[/^[a-zA-Z0-9._%+-]/,'Should be a vaild email address!'],
     trim:true
   },
-  type:{
+  role:{
     type:String,
     required:[true,'you need to choose'],
     trim:true
