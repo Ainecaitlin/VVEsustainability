@@ -68,30 +68,30 @@ var rooms = ['General-Chat','Solar-Panel','Finance', 'Charging-Station' ];
 
 var fs = require('fs');
 var array = fs.readFileSync('./config/chatroomMasterFile.txt').toString().split("\n");
-for(i in array) {
-    console.log("adding room:" + array[i]);
+/*for(room in rooms) {
+    console.log("adding room:" + room);
     rooms.push(array[i]);
-    console.log("rooms["+ i + "]: " + rooms[rooms.length-1]);
-} //= 
+    console.log("rooms["+ room + "]: " + rooms[rooms.length-1]);
+} //= */
 console.log("Pulling Chatroom Master file....:" + rooms[rooms.length-1]);
 var CHAT_ROOMS = 7; //The number of chatrooms, this variable controls the ini of sockets, namespaces and routes.
 for(var room in rooms){
     nameSpaces.push(io.of('/chats' + room)); //domain.com/chats/General-Chat
 	console.log("Creating namespace /chats" + room);
     nameSpaces[nameSpaces.length-1].on('connection', socket  =>  {
-            console.log("user connected to Channel:" + i + " , migrating user to general chat.");
+            console.log("user connected to Channel:" + room + " , migrating user to general chat.");
             socket.leave(socket.id); //Bug Fix for dual entries
             socket.join(room);
             socket.on('disconnect', function() {
                 console.log("user disconnected");
             });  
             socket.on('chat message', function(data) {
-                console.log("message: "  +  data.message + "User: " + data.sender + "Room:" + rooms[i]);
+                console.log("message: "  +  data.message + "User: " + data.sender + "Room:" + room);
                 //broadcast message from client A to all clients in client A's current room
-                nameSpaces[i].to(room).emit("received", { message: data.message, sender: data.sender ,chatroom:rooms[i] });
+                nameSpaces[i].to(room).emit("received", { message: data.message, sender: data.sender ,chatroom:room });
                 
             //I am testing if the message functionality stores this message or not
-            let  chatMessage  =  new Chat({ sender: data.sender, chatroom: rooms[i] ,message: data.message});
+            let  chatMessage  =  new Chat({ sender: data.sender, chatroom: room ,message: data.message});
             chatMessage.save();
         })
     });

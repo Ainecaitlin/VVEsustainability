@@ -33,7 +33,7 @@ var userName;
 var MapSchema = Schema; //Define variable that will contain our map data
 /* The JSON Schema for an Apartment colllection according to the Database */
 var MapModelSchema = new Schema( 
-{_id : Schema.Types.ObjectId,
+{
  vve_id : Schema.Types.Number, //Identifiers
  longitude : Schema.Types.String, //Longitutde Opted to use String values to prevent precision error and ambuigity in transfer
  latitude : Schema.Types.String, //Latitude
@@ -69,7 +69,8 @@ chatArray = loadChat(res, room3);
 });
 async function loadMap(res){
       /* Back-End code for obtaining VVE Geolocations*/
-     mapDataModel = mongoose.model('Apartment', MapModelSchema, 'Apartment');
+     mapDataModel = mongoose.model('Apartments', MapModelSchema, 'Apartments');
+	 console.log(mapDataModel);
      var rawApartmentArray = [];
      console.log("Searching for Apartments..");
      const query =  mapDataModel.find();
