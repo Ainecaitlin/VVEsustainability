@@ -24,10 +24,10 @@ io.set("transports", ["polling"]);
   
 // DB setting
 const db = require('./config/key').MongoURI;
-
 //Connect mongo
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
-  .then(() => console.log('DB connected...'))
+  .then(function(){console.log('DB connected...');
+console.log(db.name); })
   .catch(err => console.log(err))
 
 //other setting  
