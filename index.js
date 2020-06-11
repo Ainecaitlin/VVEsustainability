@@ -64,7 +64,7 @@ app.use('/chats/:rooms', require('./routes/home'));
 //Catch a connection event that has been routed to the node server into nameSpace /chats
 //Create an Array of NameSpaces, For each run the code below
 var nameSpaces = [];
-var rooms = ['General-Chat','Solar-Panel','Finance', 'Charging-Station' ];
+var rooms = ['General-chat','Solar-Panel','Finance', 'Charging-Station' ];
 
 var fs = require('fs');
 var array = fs.readFileSync('./config/chatroomMasterFile.txt').toString().split("\n");
@@ -86,7 +86,7 @@ for(var room in rooms){
                 console.log("user disconnected");
             });  
             socket.on('chat message', function(data) {
-                console.log("message: "  +  data.message + "User: " + data.sender + "Room:" + rooms[i]);
+                console.log("message: "  +  data.message + "   User: " + data.sender + "   Room:" + rooms[i]);
                 //broadcast message from client A to all clients in client A's current room
                 nameSpaces[i].to(room).emit("received", { message: data.message, sender: data.sender ,chatroom:rooms[i] });
                 
