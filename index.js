@@ -64,7 +64,7 @@ app.use('/chats/:rooms', require('./routes/home'));
 //Catch a connection event that has been routed to the node server into nameSpace /chats
 //Create an Array of NameSpaces, For each run the code below
 var nameSpaces = [];
-var rooms = ['General-Chat','Solar-Panel','Finance', 'Charging-Station' ];
+var rooms = ['General-chat','Solar-Panel','Finance', 'Charging-Station' ];
 
 var fs = require('fs');
 var array = fs.readFileSync('./config/chatroomMasterFile.txt').toString().split("\n");
