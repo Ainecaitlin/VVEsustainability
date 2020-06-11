@@ -75,6 +75,7 @@ var array = fs.readFileSync('./config/chatroomMasterFile.txt').toString().split(
 } //= */
 console.log("Pulling Chatroom Master file....:" + rooms[rooms.length-1]);
 var CHAT_ROOMS = 7; //The number of chatrooms, this variable controls the ini of sockets, namespaces and routes.
+var i =0;
 for(var room in rooms){
     nameSpaces.push(io.of('/chats' + room)); //domain.com/chats/General-Chat
 	console.log("Creating namespace /chats" + room);
@@ -95,6 +96,7 @@ for(var room in rooms){
             chatMessage.save();
         })
     });
+    i++;
 }
 
 app.get('/givemejquery', function(req, res){ //Providing the client with our jquery
