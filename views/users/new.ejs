@@ -80,7 +80,7 @@
 		
         <div class="row justify-content-center">
           <div class="col-sm-3 ">
-            <select class="custom-select" id="inlineFormCustomSelectPref">
+            <select class="custom-select" id="role">
               <option value="">I am..*</option>
               <option value="1">VVE Board</option>
               <option value="2">Apartment Owner</option>
@@ -141,7 +141,7 @@
 
     </div>
 	<script>
-	$("#inlineFormCustomSelectPref").change(function() {
+	$("#role").change(function() {
 	  if ($(this).val() == "1") {
 		$('#boardactivationcode').show();
 		$('#boardactivationcode').attr('required', '');
@@ -176,7 +176,7 @@
 	  }
 		   
 	});
-	$("#inlineFormCustomSelectPref").trigger("change");
+	$("#role").trigger("change");
 
 	</script>
   </body>

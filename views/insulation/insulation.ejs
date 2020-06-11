@@ -28,10 +28,12 @@
         <div class="row">
           <a class="transparent-btn" href="/insulation-information">Information</a>
           <!--you can only see this button when login--> 
-          <% if(isAuthenticated){ %>
+           <% if(isAuthenticated && isBoardMember){ %>
             <a class="transparent-btn" href="/posts">Search</a>
           <% } %>
+		  <% if(isAuthenticated ){ %>
           <a class="transparent-btn" href="#">Chat</a>
+		  <% } %>
         </div>
       </div>
   </body>

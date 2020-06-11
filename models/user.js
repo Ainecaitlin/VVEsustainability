@@ -58,8 +58,9 @@ var userSchema = mongoose.Schema({
      match:[/^[a-zA-Z0-9._%+-]/,'Should be a vaild email address!'],
     trim:true
   },
+  // in which 1 =  board, 2 = apartment owner, and 3 = supplier
   role:{
-    type:String,
+    type:Number,
     required:[true,'you need to choose'],
     trim:true
   }

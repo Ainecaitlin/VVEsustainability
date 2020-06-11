@@ -27,6 +27,10 @@ util.isLoggedin = function(req, res, next){
   }
 }
 
+util.isBoardMember = function(req, res){
+	return (res.locals.currentUser.role === 1)
+}
+
 util.noPermission = function(req, res){
   req.flash('errors', {login:"You don't have permission"});
   req.logout();
