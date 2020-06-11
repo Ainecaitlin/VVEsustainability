@@ -12,7 +12,6 @@
       <h3 class="contentBoxTop mb-3">New User</h3>
 
       <form action="/users" method="post">
-
         <div class="row justify-content-center">
           <div class="col-sm-3">
             <input type="text" id="username" name="username" placeholder="Username*" value="<%= user.username %>" class="form-control <%= (errors.username)?'is-invalid':'' %>">
@@ -63,7 +62,6 @@
             </select>
           </div>
         </div>
-
         <p>
           <small>*Required</small>
         </p>

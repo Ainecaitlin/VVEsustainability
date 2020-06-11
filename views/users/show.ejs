@@ -7,9 +7,7 @@
     <%- include('../partials/nav') %>
 
     <div class="container mb-3">
-
-      <h3 class="contentBoxTop mb-3">User Information</h3>
-
+      <h3 class="contentBoxTop"><%= user.username %></h3>
       <form class="user-form" action="/users" method="post">
         <fieldset disabled>
           <div class="form-group row">

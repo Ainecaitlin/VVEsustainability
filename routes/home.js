@@ -1,9 +1,134 @@
 var express = require('express');
-
+var mongoose = require('mongoose');
 var router = express.Router();
+var fs = require('fs');
+
+//************* AUTHENTICATION *********************//
+const connectEnsureLogin = require('connect-ensure-login');
 var passport = require('../config/passport');
+var apartmentArray = [];
+var mapDataModel;
+var apartmentArray = [];
+var chatArray = [];
+const Schema = mongoose.Schema;
+//var socket = io();
+const Chat  =  new Schema(
+    {
+    sender: {
+    type: Schema.Types.String,
+    },
+    chatroom: {
+    type: Schema.Types.String,
+    },
+	message: {
+		type: Schema.Types.String,
+	}
+});
 
+var rooms = {a:'General-Chat',b:'Solar-Panel',c:'Finance', d:'Charging-Station'};
+const fetch = require("node-fetch");
+var userName;
+/****** SCHEMA **********/
+//Define a schema
+var MapSchema = Schema; //Define variable that will contain our map data
+/* The JSON Schema for an Apartment colllection according to the Database */
+var MapModelSchema = new Schema( 
+{_id : Schema.Types.ObjectId,
+ vve_id : Schema.Types.Number, //Identifiers
+ longitude : Schema.Types.String, //Longitutde Opted to use String values to prevent precision error and ambuigity in transfer
+ latitude : Schema.Types.String, //Latitude
+ //Status Object
+ status : {insulation : Schema.Types.Number, energy : Schema.Types.Number, charge : Schema.Types.Number, finance : Schema.Types.Number, legal : Schema.Types.Number, supply : Schema.Types.Number, risk : Schema.Types.Number}, 
+ //Address Object
+ address : { street : Schema.Types.String, number : Schema.Types.Number, city : Schema.Types.String, post_code : Schema.Types.String }
+}
+); 
+/* I made this function so unnecessary replication of data and extra computations are not done
+If a model already exists, we will simply use that model instead of creating a new one*/
+function modelAlreadyDeclared () {
+  try {
+    mongoose.model('Apartment')  // it throws an error if the model is still not defined
+    return true
+  } catch (e) {
+    return false
+  }
+}
+/*************INCOMING ROUTES*****************/
+// Direct to Home
+router.get('/', function (req, res) {
+    apartmentArray = loadMap(res);
+});
+// Click on Chat
+var CHAT_ROOMS = 7
+router.get('/chats/:rooms', connectEnsureLogin.ensureLoggedIn(), function (req, res){
+    var room = req.params.room;
+	 var room3 = req.params.rooms;
+	var room2 = req.query.room;
+console.log("LOAD CHAT : " + room3);
+chatArray = loadChat(res, room3);
+});
+async function loadMap(res){
+      /* Back-End code for obtaining VVE Geolocations*/
+     mapDataModel = mongoose.model('Apartment', MapModelSchema, 'Apartment');
+     var rawApartmentArray = [];
+     console.log("Searching for Apartments..");
+     const query =  mapDataModel.find();
+     var promise = query.then(function (docs, err){
+     if(err){
+        console.log("Error caught during query.then" + err);
+     }
+     else{
+            console.log("Search results: " + docs.length);
+        
+    res.locals.apartmentArray = docs;
+    console.log(docs);
+        console.log("Type of Map 'docs' " + typeof(docs));
+    console.log("res.locals.apartmentArray has been set");
+    res.render('home/mapPage.ejs', {data: docs});
+    console.log("res.render() called");
+    return docs;
+    }
+}).catch(err => {
+    console.log(err);
+});
+    return rawApartmentArray;
+}
+async function loadChat(res, room){
+    //***Load all chat messages in the DB into a JSON and push to client-side***//
+    var model = mongoose.model(room, Chat, room);
+    const chatQuery = model.find(); //Query Chatroom Data
+    var chatPromise = chatQuery.then(
+    function (docs, err)
+     {
+        if(err)
+        {
+            console.log("Error caught during Chat Query: " + err);
+        }
+    else
+     {
+         //Promise was kept and document loaded without error
+        console.log("Chat results:" + docs.length);        
+        //res.locals.chatData = docs;
+        console.log(docs);
+        console.log("Type of Chat 'docs':" + typeof(docs));
+        //res.render('home/chat.ejs', { html: html }); //Render it in EJS 
+         
+         //res.json(docs);
+         //res.sendFile(__dirname + '/chat.html');
+         //console.log("Sending Chat.html via RES");
+         
+        res.render('home/' + room + '.ejs', {chatData: docs, userName: userName});
+        console.log("Chat: home/" + room + '.ejs', " rendering... username: " + userName);
+         
+        return docs;
+     }
+    }).catch(err => {
+    console.log(err);
+  });
+ return chatArray;   
+}
 
+// ROUTES
 
 // Home
 router.get('/', function(req, res){
@@ -127,7 +252,9 @@ router.post('/login',
     }
 
     if(isValid){
-      next();
+        userName = req.body.username;
+        console.log("username set to:" + userName);
+        next();
     }
     else {
       req.flash('errors',errors);
@@ -145,5 +272,4 @@ router.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
 });
-
 module.exports = router;

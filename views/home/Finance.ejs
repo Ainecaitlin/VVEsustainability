@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+    
+      <script src="/givemejquery"></script>
+    <a href="Solar-Panels" target="_blank" class="button">Solar Panels</a>
+    <a href="Charging-Stations" target="_blank" class="button">Charging Stations</a>
+    <a href="General-Chat" target="_blank" class="button">General Chat</a>
+
+<div id="Finance" class="tabcontent">
+  <h3>Finance Discussion Room</h3>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(86, 245, 79); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: rgb(3, 173, 252); }
+      #messages li:nth-child(even) { background: rgb(3, 140, 252); }
+      #messages{height: 600px;}
+    </style>
+</div>
+  <head>
+    <title>Finance Chat</title>
+    
+  <body>
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+<script type="text/javascript">
+    /*var io = new io('ws://64.227.79.217:8000/chats',{
+        transports: ['websocket'],
+          upgrade: false
+    });*/
+  //  var io = require('socket.io-client');
+    var sock = new io('/chats2', {
+      //  transports: ['websocket'],
+        upgrade: false
+    });
+  $(function () {
+      //********** PREVIOUS CHAT MESSAGES ************//
+      var chatData = <%- JSON.stringify(chatData) %>; 
+    let username = <%- JSON.stringify(userName)%>;
+    
+      console.log("printing client-side data recieved: " + chatData + "user: " + username);
+    //fetch("/chats").then(json  =>  {
+//J//SON.parse(chatData  =>  {
+let  li  =  document.createElement("li");
+let messages = document.getElementById("messages")
+let  span  =  document.createElement("span");
+      for(i =0; i < chatData.length; i++){ //For every message recieved
+$('#messages').append($('<li>').text(chatData[i].message));
+          $('#messages').append($('<span>').text("by " + chatData[i].sender));
+      }
+      //**************** REAL_TIME SOCKET INI ***************//
+      sock.on('connect', function(){
+        console.log(sock.id); //This is to allow the socket object to establish, print the ID, then continue further [Timeout Bug Fix]
+    
+    /*messages
+    .appendChild(span)
+    .append("by "  +  chatData.sender  +  ": "    /*formatTimeAgo(chatData.createdAt));*/
+      
+    $('form').submit(function(e){ //onClick of submit, use anonymous function
+      e.preventDefault(); // prevents page reloading
+        var data = {message: $('#m').val(), 
+                    sender: username};
+      sock.emit('chat message', data); //Encode this text with 'chat message' for server to sort
+        console.log("Emitting Message")
+      $('#m').val('');
+      return false;
+    });
+    sock.on('chat message', function(msg){
+      $('#messages').append($('<li>').text(msg));
+    });
+   
+      
+//});
+
+    sock.on("received", msgData => {
+    let li = document.createElement("li");
+    let span = document.createElement("span");
+    var messages = document.getElementById("messages");
+    messages.appendChild(li).append(msgData.message);
+    messages.appendChild(span).append("by " + msgData.sender + ": " + "just now");
+    console.log("Hello bingo!");
+  });/*}).catch(err => { console.log(err); });*/
+      });
+      
+      });
+</script>
+
+  </body>
+</html>
