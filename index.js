@@ -1,3 +1,4 @@
+//#*********** CONTRIBUTOR: RAYYAN ****************//
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
@@ -73,49 +74,55 @@ app.use('/comments', util.getPostQueryString, require('./routes/comments'));
 app.use('/files', require('./routes/files'));
 //Dynamically add each chatroom route to our Express, redirecting to home for loading of Chat
 app.use('/chats/:rooms', require('./routes/home'));
-
 //Catch a connection event that has been routed to the node server into nameSpace /chats
 //Create an Array of NameSpaces, For each run the code below
 var nameSpaces = [];
-var rooms = ['General-Chat','Solar-Panel','Finance', 'Charging-Station' ];
-
+const rooms = {0:"General-Chat",1:"Solar-Panel",2:"Finance", 3:"Charging-Station" };
+var chatDataModels = [];
 var fs = require('fs');
-var array = fs.readFileSync('./config/chatroomMasterFile.txt').toString().split("\n");
-/*for(room in rooms) {
+//***** Dynamic loading of chatrooms, that admin can edit via the website. Removed for now as the last merge
+//left me with even more bugs to fix by myself :)
+/*var array = fs.readFileSync('./config/chatroomMasterFile.txt').toString().split("\n");
+for(room in rooms) {
     console.log("adding room:" + room);
     rooms.push(array[i]);
     console.log("rooms["+ room + "]: " + rooms[rooms.length-1]);
 } //= */
-console.log("Pulling Chatroom Master file....:" + rooms[rooms.length-1]);
 var CHAT_ROOMS = 7; //The number of chatrooms, this variable controls the ini of sockets, namespaces and routes.
-for(i =0; i < rooms.length; i++){
-    nameSpaces.push(io.of('/chats' + rooms[i])); //domain.com/chats/General-Chat
-	console.log("Creating namespace /chats" + rooms[i]);
-    nameSpaces[nameSpaces.length-1].on('connection', socket  =>  {
-            console.log("user connected to Channel:" + rooms[i] + " , migrating user to general chat.");
+var i = 0;
+for(var roomIndex in rooms){
+    console.log("foreach: " + rooms[roomIndex])
+    nameSpaces.push(io.of('/chats' + roomIndex)); //domain.com/chats/General-Chat will have socket /chats0
+	console.log("Creating namespace /chats" + roomIndex);
+    chatDataModels.push(mongoose.model(rooms[roomIndex], chatSchema, rooms[roomIndex])); //Each chatroom needs its designated model pointing to the appropiate collection in the DB
+    nameSpaces[roomIndex].on('connection', socket  =>  {
+        //Only allow socket interactions if the user is logged in (This prevents bugs when user is logged out but chat is left open)
+        if(connectEnsureLogin.ensureLoggedIn()){
+            console.log("user connected to Channel:" + rooms[roomIndex] + "migrating user to general chat.");
             socket.leave(socket.id); //Bug Fix for dual entries
-            socket.join(rooms[i]);
+            socket.join(rooms[roomIndex]);
             socket.on('disconnect', function() {
                 console.log("user disconnected");
             });  
-            socket.on('chat message', function(data) {
-                console.log("message: "  +  data.message + "User: " + data.sender + "Room:" + room);
+           socket.on('chat message', function(data) {
+                console.log("message: "  +  data.message + "User: " + data.sender + "Room:" + rooms[roomIndex]);
                 //broadcast message from client A to all clients in client A's current room
-                nameSpaces[nameSpaces.length-1].to(rooms[i]).emit("received", { message: data.message, sender: data.sender ,chatroom:rooms[i] });
+                nameSpaces[roomIndex].to(rooms[roomIndex]).emit("received", { message: data.message, sender: data.sender ,chatroom:rooms[roomIndex] });
                 
             //I am testing if the message functionality stores this message or not
                 
-                var chatDataModel = mongoose.model(rooms[i], chatSchema, rooms[i]);
-            let  chatMessage  =  new chatDataModel({ message: data.message, sender: data.sender ,chatroom:rooms[i]});
-			console.log("CHAT DEBUG INDEX.JS 95: About to save to DB: " + chatMessage);
-            chatMessage.save(function(err){
+                if(!modelAlreadyDeclared(rooms[roomIndex])){ var chatDataModel = mongoose.model(rooms[roomIndex], chatSchema, rooms[roomIndex]); }
+               let chatMessage = new chatDataModels[roomIndex]({ message: data.message, sender: data.sender ,chatroom:data.room});
+               chatMessage.save(function(err){
                 if(err){
                     console.log("CHAT WRITE ERROR: Index.JS 111" + err);
                 }else{
-                    console.log("Writing message to:"+rooms[i]);
+                    console.log("Writing message to:"+rooms[roomIndex]);
+                    mongoose.deleteModel(rooms[roomIndex]); //Clean up
                 }
             });
-        })
+        });
+        }
     });
 }
 
@@ -133,3 +140,15 @@ http.listen(port, function(){
 console.log('server on! http://localhost:'+port + "app.get(port) = " + app.get('port'));
 
 });
+/* I made this function so unnecessary replication of data and extra computations are not done
+If a model already exists, we will simply use that model instead of creating a new one*/
+function modelAlreadyDeclared (m) {
+  try {
+    mongoose.model(m)  // it throws an error if the model is still not defined
+    return true
+  } catch (e) {
+    return false
+  }
+}
+module.export = chatDataModels;
+

@@ -1,3 +1,4 @@
+//********** CONTRIBUTOR: RAYYAN + HWAJUN**********//
 var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
@@ -28,6 +29,7 @@ var chatDataModel;
 var rooms = {a:'General-Chat',b:'Solar-Panel',c:'Finance', d:'Charging-Station'};
 const fetch = require("node-fetch");
 var userName;
+var chatDataModels = mongoose.modelNames();
 /****** SCHEMA **********/
 //Define a schema
 var MapSchema = Schema; //Define variable that will contain our map data
@@ -45,9 +47,9 @@ var MapModelSchema = new Schema(
 ); 
 /* I made this function so unnecessary replication of data and extra computations are not done
 If a model already exists, we will simply use that model instead of creating a new one*/
-function modelAlreadyDeclared () {
+function modelAlreadyDeclared (m) {
   try {
-    mongoose.model('Apartment')  // it throws an error if the model is still not defined
+    mongoose.model(m)  // it throws an error if the model is still not defined
     return true
   } catch (e) {
     return false
@@ -65,11 +67,14 @@ router.get('/chats/:rooms', connectEnsureLogin.ensureLoggedIn(), function (req, 
 	 var room3 = req.params.rooms;
 	var room2 = req.query.room;
 console.log("LOAD CHAT : " + room3);
+    mongoose.deleteModel(room3);
 chatArray = loadChat(res, room3);
 });
 async function loadMap(res){
       /* Back-End code for obtaining VVE Geolocations*/
-     mapDataModel = mongoose.model('Apartment', MapModelSchema, 'Apartment');
+    if(!modelAlreadyDeclared('Apartment')){
+        mapDataModel = mongoose.model('Apartment', MapModelSchema, 'Apartment');
+    }
 	 console.log("Load Map Debug: " + mapDataModel.db.name);
      var rawApartmentArray = [];
      console.log("Searching for Apartments..");
@@ -94,10 +99,17 @@ async function loadMap(res){
 });
     return rawApartmentArray;
 }
+function roomToIndex(room){
+    if(room == "General-Chat"){ return 0; }
+    else if(room == "Solar-Panel"){ return 1; }
+    else if(room == "Finance"){return 2;}
+    else if(room == "Charging-Station"){ return 3;}
+}
+var chatDataModel;
 async function loadChat(res, room){
     //***Load all chat messages in the DB into a JSON and push to client-side***//
     var chatDataModel = mongoose.model(room, chatSchema, room);
-	console.log("CHAT DEBUG:" + chatDataModel.db.name);
+	console.log("CHAT DEBUG:" + chatDataModel.db.name + "room var:" + room);
     const chatQuery = chatDataModel.find(); //Query Chatroom Data
     var chatPromise = chatQuery.then(
     function (docs, err)
@@ -109,16 +121,9 @@ async function loadChat(res, room){
     else
      {
          //Promise was kept and document loaded without error
-        console.log("Chat results:" + docs.length);        
-        //res.locals.chatData = docs;
+        console.log("Chat results:" + docs.length);    
         console.log(docs);
         console.log("Type of Chat 'docs':" + typeof(docs));
-        //res.render('home/chat.ejs', { html: html }); //Render it in EJS 
-         
-         //res.json(docs);
-         //res.sendFile(__dirname + '/chat.html');
-         //console.log("Sending Chat.html via RES");
-         
         res.render('home/' + room + '.ejs', {chatData: docs, userName: userName});
         console.log("Chat: home/" + room + '.ejs', " rendering... username: " + userName);
          
@@ -127,6 +132,7 @@ async function loadChat(res, room){
     }).catch(err => {
     console.log(err);
   });
+    mongoose.deleteModel(room); //Clean up
  return chatArray;   
 }
 
