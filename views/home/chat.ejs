@@ -4,9 +4,20 @@
 
     
       <script src="/givemejquery"></script>
-  <head>
-    <title>Solar Panel General Chat</title>
-    <h1>Chat Room to discuss Solar Panels</h1>
+    <button class="tablink" onclick="href='http://64.227.79.217/chats'" id="defaultOpen">General Chat</button>
+<button class="tablink" onclick="href='http://64.227.79.217/chats-solar">Solar Panels</button>
+<button class="tablink" onclick="href='http://64.227.79.217/chats-charging'">Charging Stations</button>
+<button class="tablink" onclick="href='http://64.227.79.217/chats-finance'">Finance</button>
+
+<div id="General-Chat" class="tabcontent">
+  <h3>Home</h3>
+  <p>Home is where the heart is..</p>
+</div>
+    
+    
+<div id="Solar-Panel" class="tabcontent">
+  <h3>Solar Panel Discussion Room</h3>
+  <p>Home is where the heart is..</p>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -19,7 +30,34 @@
       #messages li:nth-child(even) { background: rgb(13, 231, 97); }
       #messages{height: 600px;}
     </style>
-  </head>
+</div>
+    <script>
+  // Hide all elements with class="tabcontent" by default */
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Remove the background color of all tablinks/buttons
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].style.backgroundColor = "";
+  }
+
+  // Show the specific tab content
+  document.getElementById(pageName).style.display = "block";
+
+  // Add the specific color to the button used to open the tab content
+  elmnt.style.backgroundColor = color;
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click(); 
+    </script>
+  <head>
+    <title>Solar Panel General Chat</title>
+    <h1>Chat Room to discuss Solar Panels</h1>
+    
   <body>
     <ul id="messages"></ul>
     <form action="">
@@ -31,7 +69,7 @@
           upgrade: false
     });*/
   //  var io = require('socket.io-client');
-    var sock = new io('/chats', {
+    var sock = new io('/chats0', {
       //  transports: ['websocket'],
         upgrade: false
     });

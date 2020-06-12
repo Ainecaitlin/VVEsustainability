@@ -1,0 +1,47 @@
+body {
+  font-family: 'Raleway', sans-serif;
+  background-image: url("../img/image2.jpg"); 
+  height:100vh;
+  background-size: cover;
+  background-position: center;
+} 
+
+.navbar-brand{
+  color: white;
+}
+
+#fullpage .section{
+  height: 100%;
+  display: block;
+  width: 100%;
+  background: transparent;
+}
+
+#fullpage .section .conatiner h1{
+  color: white;
+  text-align: center;
+  width: 100%;
+}
+#fullpage .section .row{
+  background-color: rgba(151, 151, 151, 0.664); 
+  color: white;
+  display: flex;
+  font-size: 15px;
+  flex-grow: 1;
+  white-space: pre-line;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  overflow: auto;
+}
+#fullpage .section .fp-tableCell{
+  width: 100vw;
+}
+
+#fullpage .section h1{
+  color: white;
+  text-align: center;
+  width: 100%;
+}
+#fp-nav ul li a span{
+  background: white;
+}
