@@ -67,7 +67,7 @@ router.get('/chats/:rooms', connectEnsureLogin.ensureLoggedIn(), function (req, 
 	 var room3 = req.params.rooms;
 	var room2 = req.query.room;
 console.log("LOAD CHAT : " + room3);
-    mongoose.deleteModel(room3);
+   if(modelAlreadyDeclared(room3)){ mongoose.deleteModel(room3);}
 chatArray = loadChat(res, room3);
 });
 async function loadMap(res){

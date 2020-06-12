@@ -89,29 +89,29 @@ for(room in rooms) {
     console.log("rooms["+ room + "]: " + rooms[rooms.length-1]);
 } //= */
 var CHAT_ROOMS = 7; //The number of chatrooms, this variable controls the ini of sockets, namespaces and routes.
-var i = 0;
-for(var roomIndex in rooms){
-    console.log("foreach: " + rooms[roomIndex])
-    nameSpaces.push(io.of('/chats' + roomIndex)); //domain.com/chats/General-Chat will have socket /chats0
-	console.log("Creating namespace /chats" + roomIndex);
-    chatDataModels.push(mongoose.model(rooms[roomIndex], chatSchema, rooms[roomIndex])); //Each chatroom needs its designated model pointing to the appropiate collection in the DB
-    nameSpaces[roomIndex].on('connection', socket  =>  {
-        //Only allow socket interactions if the user is logged in (This prevents bugs when user is logged out but chat is left open)
-        if(connectEnsureLogin.ensureLoggedIn()){
-            console.log("user connected to Channel:" + rooms[roomIndex] + "migrating user to general chat.");
+var chatroomSockets =[];
+function createNameSpace(n){
+    var nameSpace = io.of('/chats/'+n); 
+    chatDataModels.push(mongoose.model(n, chatSchema, n)); //Each chatroom needs its designated model pointing to the appropiate collection in the DB
+     //domain.com/chats/General-Chat will have socket /chats0
+    nameSpace.on('connection', socket => { 
+        var chatRoom, userName;
+        socket.handshake.query['chatRoomID'] = chatRoom;
+        socket.handshake.query['user'] = userName;
+        console.log("User:" + userName + "connected on Channel: " + chatRoom); 
             socket.leave(socket.id); //Bug Fix for dual entries
-            socket.join(rooms[roomIndex]);
+            socket.join(chatRoom);
             socket.on('disconnect', function() {
                 console.log("user disconnected");
             });  
            socket.on('chat message', function(data) {
-                console.log("message: "  +  data.message + "User: " + data.sender + "Room:" + rooms[roomIndex]);
+               
+                console.log("message: "  +  data.message + "User: " + data.sender + "Room:" + chatRoom);
                 //broadcast message from client A to all clients in client A's current room
-                nameSpaces[roomIndex].to(rooms[roomIndex]).emit("received", { message: data.message, sender: data.sender ,chatroom:rooms[roomIndex] });
-                
-            //I am testing if the message functionality stores this message or not
-                
-                if(!modelAlreadyDeclared(rooms[roomIndex])){ var chatDataModel = mongoose.model(rooms[roomIndex], chatSchema, rooms[roomIndex]); }
+                nameSpace.to(chatRoom).emit("received", { message: data.message, sender: data.sender ,chatroom:rooms[roomIndex] });
+               
+                if(!modelAlreadyDeclared(chatRoom)){ var chatDataModel = mongoose.model(rooms[roomIndex], chatSchema, rooms[roomIndex]); }
+               
                let chatMessage = new chatDataModels[roomIndex]({ message: data.message, sender: data.sender ,chatroom:data.room});
                chatMessage.save(function(err){
                 if(err){
@@ -122,10 +122,13 @@ for(var roomIndex in rooms){
                 }
             });
         });
-        }
+
     });
 }
-
+createNameSpace('General-Chat');
+createNameSpace('Finance');
+createNameSpace('Solar-Panel');
+createNameSpace('Charging-Station');
 app.get('/givemejquery', function(req, res){ //Providing the client with our jquery
   res.sendFile(__dirname + '/node_modules/jquery/dist/jquery.js');
 });

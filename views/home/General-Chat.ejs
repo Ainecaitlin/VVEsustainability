@@ -30,15 +30,16 @@
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
 <script type="text/javascript">
-    var sock = new io('/chats0', {
-      //  transports: ['websocket'],
-        upgrade: false
-    });
+    
   $(function () {
       //********** PREVIOUS CHAT MESSAGES ************//
       var chatData = <%- JSON.stringify(chatData) %>; 
     let username = <%- JSON.stringify(userName)%>;
-    
+    var sock = new io('/chats/General-Chat', {
+      //  transports: ['websocket'],
+        upgrade: true,
+        query : "chatRoomID=General-Chat&user="+username
+    });
       console.log("printing client-side data recieved: " + chatData + "user: " + username);
 let  li  =  document.createElement("li");
 let messages = document.getElementById("messages")
