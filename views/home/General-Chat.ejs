@@ -64,7 +64,9 @@ $('#messages').append($('<li>').text(chatData[i].message));
     });
 
 
-    sock.on("received", msgData => {
+   
+      });
+       sock.on("received", msgData => {
     let li = document.createElement("li");
     let span = document.createElement("span");
     var messages = document.getElementById("messages");
@@ -72,8 +74,6 @@ $('#messages').append($('<li>').text(chatData[i].message));
     messages.appendChild(span).append("by " + msgData.sender + ": " + "just now");
     console.log("Hello bingo!");
   });
-      });
-      
       });
 </script>
 

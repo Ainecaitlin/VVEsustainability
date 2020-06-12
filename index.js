@@ -16,7 +16,6 @@ var express = require('express');
 
 //require the http module
 // require the socket.io module & express
-var Chat= require('./routes/chatschema.js')
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
@@ -24,8 +23,22 @@ io.set("transports", ["polling"]);
   
 // DB setting
 const db = require('./config/key').MongoURI;
+const  Schema  =  mongoose.Schema;
+const  chatSchema  =  new Schema(
+    {
+    
+	message: {
+		type: Schema.Types.String,
+	},
+    sender: {
+    type: Schema.Types.String,
+    },
+    chatroom: {
+    type: Schema.Types.String,
+    }
+});
 //Connect mongo
-mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+mongoose.connect('mongodb://127.0.0.1:27017/VVE_DB', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
   .then(function(){console.log('DB connected...');
 console.log(db.name); })
   .catch(err => console.log(err))
@@ -64,7 +77,7 @@ app.use('/chats/:rooms', require('./routes/home'));
 //Catch a connection event that has been routed to the node server into nameSpace /chats
 //Create an Array of NameSpaces, For each run the code below
 var nameSpaces = [];
-var rooms = ['General-chat','Solar-Panel','Finance', 'Charging-Station' ];
+var rooms = ['General-Chat','Solar-Panel','Finance', 'Charging-Station' ];
 
 var fs = require('fs');
 var array = fs.readFileSync('./config/chatroomMasterFile.txt').toString().split("\n");
@@ -75,28 +88,35 @@ var array = fs.readFileSync('./config/chatroomMasterFile.txt').toString().split(
 } //= */
 console.log("Pulling Chatroom Master file....:" + rooms[rooms.length-1]);
 var CHAT_ROOMS = 7; //The number of chatrooms, this variable controls the ini of sockets, namespaces and routes.
-var i =0;
-for(var room in rooms){
-    nameSpaces.push(io.of('/chats' + room)); //domain.com/chats/General-Chat
-	console.log("Creating namespace /chats" + room);
+for(i =0; i < rooms.length; i++){
+    nameSpaces.push(io.of('/chats' + rooms[i])); //domain.com/chats/General-Chat
+	console.log("Creating namespace /chats" + rooms[i]);
     nameSpaces[nameSpaces.length-1].on('connection', socket  =>  {
-            console.log("user connected to Channel:" + room + " , migrating user to general chat.");
+            console.log("user connected to Channel:" + rooms[i] + " , migrating user to general chat.");
             socket.leave(socket.id); //Bug Fix for dual entries
-            socket.join(room);
+            socket.join(rooms[i]);
             socket.on('disconnect', function() {
                 console.log("user disconnected");
             });  
             socket.on('chat message', function(data) {
                 console.log("message: "  +  data.message + "User: " + data.sender + "Room:" + room);
                 //broadcast message from client A to all clients in client A's current room
-                nameSpaces[i].to(room).emit("received", { message: data.message, sender: data.sender ,chatroom:room });
+                nameSpaces[nameSpaces.length-1].to(rooms[i]).emit("received", { message: data.message, sender: data.sender ,chatroom:rooms[i] });
                 
             //I am testing if the message functionality stores this message or not
-            let  chatMessage  =  new Chat({ sender: data.sender, chatroom: room ,message: data.message});
-            chatMessage.save();
+                
+                var chatDataModel = mongoose.model(rooms[i], chatSchema, rooms[i]);
+            let  chatMessage  =  new chatDataModel({ message: data.message, sender: data.sender ,chatroom:rooms[i]});
+			console.log("CHAT DEBUG INDEX.JS 95: About to save to DB: " + chatMessage);
+            chatMessage.save(function(err){
+                if(err){
+                    console.log("CHAT WRITE ERROR: Index.JS 111" + err);
+                }else{
+                    console.log("Writing message to:"+rooms[i]);
+                }
+            });
         })
     });
-    i++;
 }
 
 app.get('/givemejquery', function(req, res){ //Providing the client with our jquery

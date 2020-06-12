@@ -10,21 +10,21 @@ var apartmentArray = [];
 var mapDataModel;
 var apartmentArray = [];
 var chatArray = [];
-const Schema = mongoose.Schema;
-//var socket = io();
-const Chat  =  new Schema(
+const  Schema  =  mongoose.Schema;
+const  chatSchema  =  new Schema(
     {
+    
+	message: {
+		type: Schema.Types.String,
+	},
     sender: {
     type: Schema.Types.String,
     },
     chatroom: {
     type: Schema.Types.String,
-    },
-	message: {
-		type: Schema.Types.String,
-	}
+    }
 });
-
+var chatDataModel;
 var rooms = {a:'General-Chat',b:'Solar-Panel',c:'Finance', d:'Charging-Station'};
 const fetch = require("node-fetch");
 var userName;
@@ -69,8 +69,8 @@ chatArray = loadChat(res, room3);
 });
 async function loadMap(res){
       /* Back-End code for obtaining VVE Geolocations*/
-     mapDataModel = mongoose.model('Apartments', MapModelSchema, 'Apartments');
-	 console.log(mapDataModel);
+     mapDataModel = mongoose.model('Apartment', MapModelSchema, 'Apartment');
+	 console.log("Load Map Debug: " + mapDataModel.db.name);
      var rawApartmentArray = [];
      console.log("Searching for Apartments..");
      const query =  mapDataModel.find();
@@ -96,8 +96,9 @@ async function loadMap(res){
 }
 async function loadChat(res, room){
     //***Load all chat messages in the DB into a JSON and push to client-side***//
-    var model = mongoose.model(room, Chat, room);
-    const chatQuery = model.find(); //Query Chatroom Data
+    var chatDataModel = mongoose.model(room, chatSchema, room);
+	console.log("CHAT DEBUG:" + chatDataModel.db.name);
+    const chatQuery = chatDataModel.find(); //Query Chatroom Data
     var chatPromise = chatQuery.then(
     function (docs, err)
      {
@@ -216,7 +217,7 @@ router.get('/shop', function(req, res){
 // Side navigation
 //find vve
 router.get('/map', function(req, res){
-  res.render('map/map');
+  res.render('/map/map.ejs');
 });
 //newsletter
 router.get('/newsletter', function(req, res){
