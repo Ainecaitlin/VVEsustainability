@@ -1,13 +1,10 @@
 <!doctype html>
 <html>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
     
       <script src="/givemejquery"></script>
-
-    <a href="Solar-Panels" target="_blank" class="button">General Chat</a>
-    <a href="Charging-Stations" target="_blank" class="button">Charging Stations</a>
-    <a href="Finance" target="_blank" class="button">Finance</a>
 <div id="Solar-Panels" class="tabcontent">
   <h3>Solar Panel Discussion Room</h3>
     <style>
@@ -33,14 +30,21 @@
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
 <script type="text/javascript">
-    var sock = new io('/chats1', {
-      //  transports: ['websocket'],
-        upgrade: false
-    });
-  $(function () {
-      //********** PREVIOUS CHAT MESSAGES ************//
+    //********** PREVIOUS CHAT MESSAGES ************//
+      
       var chatData = <%- JSON.stringify(chatData) %>; 
     let username = <%- JSON.stringify(userName)%>;
+      
+    if(typeof username == 'undefined'){
+        //Possible Cases: User is not logged in, thus he is not allowed to see this chat.
+        //ChatData was not recieved correctly, perhaps an incorrect parameter in the URL was used which resulted in an attempt to access a non-existent namespace and thus a non-existent 
+      window.location.replace("64.227.79.217/404");
+    }
+    var sock = new io('/chats/Solar-Panel', {
+        upgrade : true,
+        query : "chatRoomID=Solar-Panel&user="+username
+    });
+  $(function () {
     
       console.log("printing client-side data recieved: " + chatData + "user: " + username);
 let  li  =  document.createElement("li");

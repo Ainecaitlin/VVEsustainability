@@ -57,7 +57,7 @@ function modelAlreadyDeclared (m) {
 }
 /*************INCOMING ROUTES*****************/
 // Direct to Home
-router.get('/', function (req, res) {
+router.get('/map', function (req, res) {
     apartmentArray = loadMap(res);
 });
 // Click on Chat
@@ -155,6 +155,9 @@ router.get('/advice-information', function(req, res){
 });
 router.get('/advice-search', function(req, res){
   res.render('posts');
+});
+router.get('/advice-chat', function(req, res){
+  res.render('home/General-Chat');
 });
 // led lighting
 router.get('/led', function(req, res){

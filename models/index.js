@@ -88,14 +88,10 @@ for(room in rooms) {
     rooms.push(array[i]);
     console.log("rooms["+ room + "]: " + rooms[rooms.length-1]);
 } //= */
-
 var CHAT_ROOMS = 7; //The number of chatrooms, this variable controls the ini of sockets, namespaces and routes.
 var chatroomSockets =[];
 function createNameSpace(n){
-    var input = '/chats/'+n;
-    var nameSpace = io.of(input); 
-    console.log("Creating NameSpace:" + input);
-    chatDataModels.push(mongoose.model(n, chatSchema, n)); //Each chatroom needs its designated model pointing to the appropiate collection in the DB
+    var nameSpace = io.of('/chats/'+n); 
      //domain.com/chats/General-Chat will have socket /chats0
     nameSpace.on('connection', socket => { 
         var chatRoom, userName;
@@ -111,21 +107,25 @@ function createNameSpace(n){
                
                 console.log("message: "  +  data.message + "User: " + data.sender + "Room:" + chatRoom);
                 //broadcast message from client A to all clients in client A's current room
-                nameSpace.to(chatRoom).emit("received", { message: data.message, sender: data.sender ,chatroom:n });
+                nameSpace.to(chatRoom).emit("received", { message: data.message, sender: data.sender ,chatroom:rooms[roomIndex] });
                
-                if(!modelAlreadyDeclared(chatRoom)){ chatDataModels[n] = mongoose.model(n, chatSchema, n); }
-               let chatMessage = new chatDataModels[n]({ message: data.message, sender: data.sender ,chatroom:data.room});
+                if(!modelAlreadyDeclared(chatRoom)){ var chatDataModel = mongoose.model(rooms[roomIndex], chatSchema, rooms[roomIndex]); }
+               
+               let chatMessage = new chatDataModels[roomIndex]({ message: data.message, sender: data.sender ,chatroom:data.room});
                chatMessage.save(function(err){
                 if(err){
                     console.log("CHAT WRITE ERROR: Index.JS 111" + err);
                 }else{
-                    console.log("Writing message to:"+n);
-                    mongoose.deleteModel(n); //Clean up
+                    console.log("Writing message to:"+rooms[roomIndex]);
+                    mongoose.deleteModel(rooms[roomIndex]); //Clean up
                 }
             });
         });
 
     });
+}
+	console.log("Creating namespace /chats" + roomIndex);
+    chatDataModels.push(mongoose.model(rooms[roomIndex], chatSchema, rooms[roomIndex])); //Each chatroom needs its designated model pointing to the appropiate collection in the DB
 }
 createNameSpace('General-Chat');
 createNameSpace('Finance');
